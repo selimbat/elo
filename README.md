@@ -1,1 +1,1 @@
-Un site qui permets aux gens de classer les candidats aux ‚lections pr‚sidentielle 2022 sur un axe polite droite-gauche. 
+Un site qui permet aux gens de classer les candidats aux Ã©lections prÃ©sidentielles 2022 sur un axe politique droite-gauche. 
