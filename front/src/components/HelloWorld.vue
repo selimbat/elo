@@ -2,10 +2,10 @@
   <div>
     <div v-for="candidate in candidates" :key="candidate.id">
       <ul>
-        <il> Prénom : {{ candidate.firstname }}</il>
-        <il> Nom : {{ candidate.lastname }}</il>
-        <il> Parti : {{ candidate.party }}</il>
-        <il> Score : {{ candidate.score }}</il>
+        <li>Prénom : {{ candidate.firstname }}</li>
+        <li>Nom : {{ candidate.lastname }}</li>
+        <li>Parti : {{ candidate.party }}</li>
+        <li>Score : {{ candidate.score }}</li>
       </ul>
     </div>
     <button @click="getCandidates()">Appeler l'API</button>
@@ -26,11 +26,11 @@
     methods: {
       getCandidates() {
         const axios = require("axios");
-
+        var vm = this;
         axios
           .get("http://localhost:3000/api/candidates")
           .then(function(response) {
-            console.log(response);
+            vm.candidates = response.data;
           })
           .catch(function(error) {
             console.log(error);
