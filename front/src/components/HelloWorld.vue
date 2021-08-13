@@ -25,10 +25,19 @@
     },
     methods: {
       getCandidates() {
-        var vm = this;
-        this.$http.get("localhost:3000/candidates", (response) => {
-          vm.candidates = response.candidates;
-        });
+        const axios = require("axios");
+
+        axios
+          .get("http://localhost:3000/api/candidates")
+          .then(function(response) {
+            console.log(response);
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+          .then(function() {
+            // always executed
+          });
       },
     },
   };
