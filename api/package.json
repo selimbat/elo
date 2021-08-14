@@ -8,9 +8,7 @@
   },
   "author": "https://github.com/selimbat",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.12"
-  },
+  "devDependencies": {},
   "dependencies": {
     "express": "^4.17.1"
   }
