@@ -26,6 +26,27 @@ app.get('/api/candidates', (req, res, next) => {
       party: "parti B",
       score: -2105
     },
+    {
+      id: '3',
+      firstname: "Mohamed",
+      lastname: "Ben Barbour",
+      party: "parti C",
+      score: 230
+    },
+    {
+      id: '4',
+      firstname: "Jean",
+      lastname: "Bonbeurre",
+      party: "parti D",
+      score: -1230
+    },
+    {
+      id: '5',
+      firstname: "Sami",
+      lastname: "Ritte",
+      party: "parti E",
+      score: 5490
+    },
   ];
   res.status(200).json(candidates);
 });
