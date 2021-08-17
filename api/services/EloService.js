@@ -1,16 +1,12 @@
-import { Encounter, CheckOutcomeValidity } from "../resources/Encounter";
-import { EncounterResult, EncounterResultItem } from "../resources/EncounterResult";
-import { Candidate } from "../resources/Candidate";
+import Encounter, { CheckOutcomeValidity } from "../resources/Encounter";
+import EncounterResult, { EncounterResultItem } from "../resources/EncounterResult";
+import Candidate from "../resources/Candidate";
 
 export default class EloService {
 
-  get BASE() {
-    return 400;
-  }
+  static BASE = 400;
 
-  get COEF() {
-    return 10;
-  }
+  static COEF = 10;
 
   /**
    * Return a EncounterResult object than can then submitted to the database to update candadites' scores.
@@ -20,7 +16,7 @@ export default class EloService {
   static ComputeEncounterResults(encounter){
     let candidate1 = new Candidate(encounter.candidate1Id);
     let candidate2 = new Candidate(encounter.candidate2Id);
-    let p = GetProbablity(candidate1, candidate2);
+    let p = this.GetProbablity(candidate1, candidate2);
     let item1 = new EncounterResultItem(candidate1.Id, this.GetScoreUpdate( encounter.outcome, p    ));
     let item2 = new EncounterResultItem(candidate2.Id, this.GetScoreUpdate(-encounter.outcome, 1 - p));
     return new EncounterResult(item1, item2);
