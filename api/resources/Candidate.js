@@ -1,4 +1,4 @@
-export default class Candidate {
+class Candidate {
   constructor(id) {
     this.GetById(id);
   }
@@ -57,3 +57,5 @@ export default class Candidate {
     },
   ];
 }
+
+module.exports = Candidate;

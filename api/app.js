@@ -1,5 +1,5 @@
-import express from 'express';
-import Candidate from './resources/Candidate';
+const express = require('express');
+const Candidate = require('./resources/Candidate');
 
 const app = express();
 
@@ -24,4 +24,4 @@ app.post('/api/match', (req, res, next) => {
   })
 });
 
-export default app;
+module.exports = app;

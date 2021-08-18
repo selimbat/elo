@@ -1,6 +1,6 @@
-import Candidate from "../resources/Candidate";
-import Encounter from "../resources/Encounter";
-import EloService from "../services/EloService";
+const Candidate = require('../resources/Candidate');
+const Encounter = require('../resources/Encounter').Encounter;
+const EloService = require('../services/EloService');
 
 describe("Elo service", () => {
   

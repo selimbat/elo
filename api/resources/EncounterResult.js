@@ -1,4 +1,4 @@
-export default class EncounterResult {
+class EncounterResult {
   constructor(item1, item2){
     this.items = [item1, item2];
   }
@@ -11,4 +11,4 @@ class EncounterResultItem {
   }
 }
 
-export { EncounterResultItem };
+module.exports = { EncounterResult, EncounterResultItem };

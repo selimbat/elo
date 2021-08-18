@@ -1,5 +1,5 @@
 
-export default class Encounter {
+class Encounter {
   constructor(candidate1Id, candidate2Id, outcome){
     this.candidate1Id = candidate1Id;
     this.candidate2Id = candidate2Id;
@@ -8,7 +8,7 @@ export default class Encounter {
   }
 }
 
-let CheckOutcomeValidity = function(outcome) {
+CheckOutcomeValidity = function(outcome) {
   // 1 if candidate1 is judged more left-leaning than candidate2
   // 0 if candidate1 is judged similar to candidate2
   // -1 if candidate1 is judged more right-leaning than candidate2
@@ -17,4 +17,5 @@ let CheckOutcomeValidity = function(outcome) {
   }
 }
 
-export { CheckOutcomeValidity };
+
+module.exports = { Encounter, CheckOutcomeValidity };

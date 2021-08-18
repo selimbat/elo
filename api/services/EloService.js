@@ -1,8 +1,8 @@
-import Encounter, { CheckOutcomeValidity } from "../resources/Encounter";
-import EncounterResult, { EncounterResultItem } from "../resources/EncounterResult";
-import Candidate from "../resources/Candidate";
+const { Encounter, CheckOutcomeValidity } = require("../resources/Encounter");
+const { EncounterResult, EncounterResultItem } = require("../resources/EncounterResult");
+const Candidate = require("../resources/Candidate");
 
-export default class EloService {
+class EloService {
 
   static BASE = 400;
 
@@ -45,3 +45,5 @@ export default class EloService {
     return this.COEF * (outcome - probablity);
   }
 }
+
+module.exports = EloService;
