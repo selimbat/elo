@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "serve": "node --es-module-specifier-resolution=node server.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --verbose"
   },
   "author": "https://github.com/selimbat",

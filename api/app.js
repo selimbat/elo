@@ -1,5 +1,6 @@
-const express = require('express');
-const { default: Candidate } = require('./resources/Candidate');
+import express from 'express';
+import Candidate from './resources/Candidate';
+
 const app = express();
 
 app.use(express.json());
@@ -23,4 +24,4 @@ app.post('/api/match', (req, res, next) => {
   })
 });
 
-module.exports = app;
+export default app;
