@@ -1,7 +1,17 @@
+require('dotenv').config();
 const express = require('express');
+const mongoose = require('mongoose');
 const Candidate = require('./resources/Candidate');
 
 const app = express();
+
+mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.mlx2e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+{
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("Connected to MongoDB"))
+.catch(() => console.log("Failed to connect to MongoDB"));
 
 app.use(express.json());
 
