@@ -1,3 +1,4 @@
+
 class EncounterResult {
   constructor(item1, item2){
     this.items = [item1, item2];

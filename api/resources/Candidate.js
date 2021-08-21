@@ -1,61 +1,57 @@
-class Candidate {
-  constructor(id) {
-    this.GetById(id);
-  }
+const mongoose = require('mongoose');
 
-  GetById(id){
-    let candidate = Candidate.placeholders.find(o => o.id == id);
-    this.id = candidate.id;
-    this.firstname = candidate.firstname;
-    this.lastname = candidate.lastname;
-    this.party = candidate.party;
-    this.score = candidate.score;
+const candidateSchema = mongoose.Schema({
+  name: { type: String, required: true },
+  birthdate: { type: Date },
+  imgUrl: { type: String, required: true },
+  wikipediaUrl: { type: String },
+  occupations: [{ 
+    label: { type: String, required: true },
+    since: { type: Date } 
+  }],
+  party: {
+    name: { type: String, required: true },
+    wikipediaUrl: { type: String }
+  },
+  desciption: { type: String }
+});
 
-    //TODO query db
-    //this.score = ...
-  }
+module.exports = mongoose.model('Candidate', candidateSchema);
 
-  GetAll() {
-    // TODO query db 
-  }
-
-  static placeholders = [
-    {
-      id: '1',
-      firstname: "Michel",
-      lastname: "Dupont",
-      party: "parti A",
-      score: 1200
-    },
-    {
-      id: '2',
-      firstname: "Martine",
-      lastname: "Dubois",
-      party: "parti B",
-      score: -2105
-    },
-    {
-      id: '3',
-      firstname: "Mohamed",
-      lastname: "Ben Barbour",
-      party: "parti C",
-      score: 230
-    },
-    {
-      id: '4',
-      firstname: "Jean",
-      lastname: "Bonbeurre",
-      party: "parti D",
-      score: -1230
-    },
-    {
-      id: '5',
-      firstname: "Sami",
-      lastname: "Ritte",
-      party: "parti E",
-      score: 5490
-    },
-  ];
-}
-
-module.exports = Candidate;
+const placeholders = [
+  {
+    id: '1',
+    firstname: "Michel",
+    lastname: "Dupont",
+    party: "parti A",
+    score: 1200
+  },
+  {
+    id: '2',
+    firstname: "Martine",
+    lastname: "Dubois",
+    party: "parti B",
+    score: -2105
+  },
+  {
+    id: '3',
+    firstname: "Mohamed",
+    lastname: "Ben Barbour",
+    party: "parti C",
+    score: 230
+  },
+  {
+    id: '4',
+    firstname: "Jean",
+    lastname: "Bonbeurre",
+    party: "parti D",
+    score: -1230
+  },
+  {
+    id: '5',
+    firstname: "Sami",
+    lastname: "Ritte",
+    party: "parti E",
+    score: 5490
+  },
+];

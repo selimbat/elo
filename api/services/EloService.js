@@ -1,4 +1,4 @@
-const { Encounter, CheckOutcomeValidity } = require("../resources/Encounter");
+const Encounter = require("../resources/Encounter");
 const { EncounterResult, EncounterResultItem } = require("../resources/EncounterResult");
 const Candidate = require("../resources/Candidate");
 
@@ -14,8 +14,8 @@ class EloService {
    * @return {EncounterResult}
    */
   static ComputeEncounterResults(encounter){
-    let candidate1 = new Candidate(encounter.candidate1Id);
-    let candidate2 = new Candidate(encounter.candidate2Id);
+    let candidate1 = Candidate.findOne({ _id: encounter.candidate1Id });
+    let candidate2 = Candidate.findOne({ _id: encounter.candidate1Id });
     let p = this.GetProbablity(candidate1, candidate2);
     let item1 = new EncounterResultItem(candidate1.Id, this.GetScoreUpdate( encounter.outcome, p    ));
     let item2 = new EncounterResultItem(candidate2.Id, this.GetScoreUpdate(-encounter.outcome, 1 - p));
@@ -40,7 +40,7 @@ class EloService {
    * @returns the difference to apply the candidate's score. Can be either positive or negative.
    */
   static GetScoreUpdate(outcome, probablity){
-    CheckOutcomeValidity(outcome);
+    Encounter.checkOutcomeValidity(outcome);
     outcome = (outcome + 1) / 2; // transforming int outcome to a 0, 0.5 or 1 value for the Elo formula
     return this.COEF * (outcome - probablity);
   }
