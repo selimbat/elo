@@ -4,13 +4,15 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "dev": "node node_modules/nodemon/bin/nodemon.js server.js",
     "test": "jest --watchAll --verbose"
   },
   "author": "https://github.com/selimbat",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "jest": "^27.0.6"
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12"
   },
   "dependencies": {
     "dotenv": "^10.0.0",

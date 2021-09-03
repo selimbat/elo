@@ -9,17 +9,46 @@ class EloService {
   static COEF = 10;
 
   /**
-   * Return a EncounterResult object than can then submitted to the database to update candadites' scores.
+   * Update the candidates' scores according to the outcome of the encounter
+   * @param {EncounterResult} result 
+   */
+  static async SubmitEncounterResult(result) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await Promise.all(result.items.map(async item => {
+          let candidate = await Candidate.findOne({ _id: item.candidateId });
+          if (!candidate) {
+            reject(new Error(`Unable to find candidate of id ${item.candidateId}.`));
+            return;
+          }
+          candidate.score += item.scoreDiff;
+          await Candidate.updateOne({ _id: item.candidateId }, candidate);
+        }));
+        resolve(`Successfully submitted ${result.items.length} encounter results.`);
+      } catch (error) {
+        reject(new Error("Failed to submit the encounter result: " + error.message));
+      }
+    });
+  }
+
+  /**
+   * Return a EncounterResult object that can then submitted to the database to update candadites' scores.
    * @param  {Encounter} encounter 
    * @return {EncounterResult}
    */
-  static ComputeEncounterResults(encounter){
-    let candidate1 = Candidate.findOne({ _id: encounter.candidate1Id });
-    let candidate2 = Candidate.findOne({ _id: encounter.candidate1Id });
-    let p = this.GetProbablity(candidate1, candidate2);
-    let item1 = new EncounterResultItem(candidate1.Id, this.GetScoreUpdate( encounter.outcome, p    ));
-    let item2 = new EncounterResultItem(candidate2.Id, this.GetScoreUpdate(-encounter.outcome, 1 - p));
-    return new EncounterResult(item1, item2);
+  static async ComputeEncounterResults(encounter){
+    return new Promise(async (resolve, reject) => {
+      try {
+        let candidate1 = await Candidate.findOne({ _id: encounter.candidate1Id });
+        let candidate2 = await Candidate.findOne({ _id: encounter.candidate2Id });
+        let p = this.GetProbablity(candidate1, candidate2);
+        let item1 = new EncounterResultItem(candidate1._id, this.GetScoreUpdate( encounter.outcome, p    ));
+        let item2 = new EncounterResultItem(candidate2._id, this.GetScoreUpdate(-encounter.outcome, 1 - p));
+        resolve(new EncounterResult(item1, item2));
+      } catch (error) {
+        reject(new Error("Failed to compute encounter result: " + error.message));
+      }
+    });
   }
 
   /**

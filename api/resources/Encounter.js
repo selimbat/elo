@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const encounterSchema = mongoose.Schema({
-  candidate1Id: { type: Number, required: true },
-  candidate2Id: { type: Number, required: true },
+  candidate1Id: { type: mongoose.ObjectId, required: true },
+  candidate2Id: { type: mongoose.ObjectId, required: true },
   outcome: { type: Number, required: true },
   timestamp: { type: Date, required: true, default: Date.now },
   originIPAddress: { type: String, required: true}

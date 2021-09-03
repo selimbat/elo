@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const Candidate = require('./resources/Candidate');
+const Encounter = require('./resources/Encounter');
+const EloService = require('./services/EloService');
 
 const app = express();
 
@@ -23,15 +25,44 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/candidates', (req, res, next) => {
-  const candidates = Candidate.placeholders;
-  res.status(200).json(candidates);
+  Candidate.find()
+    .then(candidates => res.status(200).json(candidates))
+    .catch(error => res.status(400).json({ error }));
 });
 
-app.post('/api/match', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: "Match créé !"
-  })
+app.get('/api/candidate/:id', (req, res, next) => {
+  Candidate.findOne({ _id: req.params.id })
+    .then(candidate => res.status(200).json(candidate))
+    .catch(error => res.status(404).json({ error }));
 });
-
+/*
+app.post('/api/candidate', (req, res, next) => {
+  delete req.body._id;
+  const candidate = new Candidate({
+    ...req.body
+  });
+  candidate.score = 0;
+  candidate.save()
+    .then(() => res.status(201).json({ message: `Candidat '${candidate.name}' enregistré !`}))
+    .catch(error => res.status(400).json({ error }));
+});
+*/
+app.post('/api/encounter', async (req, res, next) => {
+  try {
+    delete req.body._id;
+    const encounter = new Encounter({
+      ...req.body
+    });
+    await encounter.save();
+    let encounterResult = await EloService.ComputeEncounterResults(encounter);
+    await EloService.SubmitEncounterResult(encounterResult);
+    res.status(200).json({
+      message: `Encounter between candidates of id ${encounterResult.items[0].candidateId} and ${encounterResult.items[1].candidateId} succeffully registered. The winner gained ${Math.abs(encounterResult.items[0].scoreDiff)}`
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+});
+  
 module.exports = app;
