@@ -2,9 +2,8 @@
   <div>
     <div v-for="candidate in candidates" :key="candidate.id">
       <ul>
-        <li>Prénom : {{ candidate.firstname }}</li>
-        <li>Nom : {{ candidate.lastname }}</li>
-        <li>Parti : {{ candidate.party }}</li>
+        <li>Nom : {{ candidate.name }}</li>
+        <li>Parti : {{ candidate.party.name }}</li>
         <li>Score : {{ candidate.score }}</li>
       </ul>
     </div>
