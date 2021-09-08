@@ -1,9 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const Candidate = require('./resources/Candidate');
-const Encounter = require('./resources/Encounter');
-const EloService = require('./services/EloService');
+const candidateRouter = require('./routers/candidate');
+const encounterRouter = require('./routers/Encounter');
 
 const app = express();
 
@@ -24,70 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/candidates', (req, res, next) => {
-  Candidate.find()
-    .then(candidates => res.status(200).json(candidates))
-    .catch(error => res.status(400).json({ error }));
-});
-
-app.get('/api/candidates/random-two', (req, res, next) => {
-  try {
-    Candidate.countDocuments(async (err, count) => {
-      if (err) {
-        throw err;
-      }
-      let rand = Math.floor(Math.random() * count);
-      let candidate1 = await Candidate.findOne().skip(rand);
-      let candidate2;
-      do {
-        rand = Math.floor(Math.random() * count);
-        candidate2 = await Candidate.findOne().skip(rand);
-      } while (candidate2._id == candidate1._id);
-      res.status(200).json([candidate1, candidate2]);
-    });
-  } catch (error) {
-    res.status(400).json(error);
-  }
-})
-
-app.get('/api/candidates/:id', (req, res, next) => {
-  Candidate.findOne({ _id: req.params.id })
-    .then(candidate => res.status(200).json(candidate))
-    .catch(error => res.status(404).json({ error }));
-});
-
-/*
-app.post('/api/candidate', (req, res, next) => {
-  delete req.body._id;
-  const candidate = new Candidate({
-    ...req.body
-  });
-  candidate.score = 0;
-  candidate.save()
-    .then(() => res.status(201).json({ message: `Candidat '${candidate.name}' enregistré !`}))
-    .catch(error => res.status(400).json({ error }));
-});
-*/
-app.post('/api/encounter', async (req, res, next) => {
-  try {
-    delete req.body._id;
-    if ((!req.body.hasOwnProperty("candidate1Id") || !req.body.hasOwnProperty("candidate2Id"))
-        || req.body.candidate1Id == req.body.candidate2Id) {
-      res.status(400).json({ message: "An encounter has to specify two different candidates." });
-      return;
-    }
-    const encounter = new Encounter({
-      ...req.body
-    });
-    await encounter.save();
-    let encounterResult = await EloService.ComputeEncounterResults(encounter);
-    await EloService.SubmitEncounterResult(encounterResult);
-    res.status(200).json({
-      message: `Encounter between candidates of id ${encounterResult.items[0].candidateId} and ${encounterResult.items[1].candidateId} succeffully registered. The winner gained ${Math.abs(encounterResult.items[0].scoreDiff)}`
-    });
-  } catch (error) {
-    res.status(400).json(error);
-  }
-});
+app.use("/api/candidates", candidateRouter);
+app.use("/api/encounter", encounterRouter);
   
 module.exports = app;
