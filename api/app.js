@@ -35,6 +35,7 @@ app.get('/api/candidate/:id', (req, res, next) => {
     .then(candidate => res.status(200).json(candidate))
     .catch(error => res.status(404).json({ error }));
 });
+
 /*
 app.post('/api/candidate', (req, res, next) => {
   delete req.body._id;
@@ -50,6 +51,11 @@ app.post('/api/candidate', (req, res, next) => {
 app.post('/api/encounter', async (req, res, next) => {
   try {
     delete req.body._id;
+    if ((!req.body.hasOwnProperty("candidate1Id") || !req.body.hasOwnProperty("candidate2Id"))
+        || req.body.candidate1Id == req.body.candidate2Id) {
+      res.status(400).json({ message: "An encounter has to specify two different candidates." });
+      return;
+    }
     const encounter = new Encounter({
       ...req.body
     });
