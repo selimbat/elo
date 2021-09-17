@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Card name="Batman"></Card>
+    <Card name="Batman" party="Make Gotham Great Again"></Card>
     <div class="input">
       <p id="is">est :</p>
       <div class="actions">

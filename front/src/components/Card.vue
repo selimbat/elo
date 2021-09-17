@@ -1,6 +1,9 @@
 <template>
   <div class="card">
-    <h3 class="name">{{ name }}</h3>
+    <div class="infos">
+      <h2>{{ name }}</h2>
+      <h3>{{ party ? party : "Indépendant" }}</h3>
+    </div>
   </div>
 </template>
 
@@ -12,6 +15,7 @@
         type: String,
         required: true,
       },
+      party: String,
     },
   };
 </script>
@@ -26,8 +30,11 @@
     border-radius: 15px;
     background-color: red;
   }
-  .card > .name {
+  .card > .infos {
     position: absolute;
-    inset: auto auto 1.5rem 2rem;
+    inset: auto 2rem 1.5rem 2rem;
+    h3 {
+      font-size: 18px;
+    }
   }
 </style>
