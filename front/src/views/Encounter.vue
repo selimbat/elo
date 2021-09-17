@@ -1,9 +1,7 @@
 <template>
   <section>
-    <div class="card left">
-      <h3 class="name">Batman</h3>
-    </div>
-    <div class="card input">
+    <Card name="Batman"></Card>
+    <div class="input">
       <p id="is">est :</p>
       <div class="actions">
         <a>plus à gauche</a>
@@ -12,12 +10,19 @@
       </div>
       <p id="than">que</p>
     </div>
-    <div class="card right">
-      <h3 class="name">Superman</h3>
-    </div>
+    <Card name="Superman"></Card>
   </section>
 </template>
 
+<script>
+  import Card from "@/components/Card.vue";
+  export default {
+    name: "Encounter",
+    components: {
+      Card,
+    },
+  };
+</script>
 <style lang="scss" scoped>
   section {
     position: absolute;
@@ -28,27 +33,16 @@
     width: 100%;
     justify-content: center;
   }
-  .card {
+  .input {
     font-size: 30px;
     position: relative;
     height: 100%;
     margin: 0 1em;
     border-radius: 15px;
-  }
-  .card.right,
-  .card.left {
-    width: 20rem;
-    background-color: red;
-  }
-  .card.input {
     width: 18rem;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-  }
-  .card > .name {
-    position: absolute;
-    inset: auto auto 1.5rem 2rem;
   }
   .actions {
     display: flex;
