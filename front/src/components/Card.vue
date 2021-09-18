@@ -61,11 +61,14 @@
     width: 20rem;
     margin: 0 1em;
     border-radius: var(--border-radius);
-    background-color: red;
+    background-image: url(https://random.imagecdn.app/500/500);
   }
   .card > .infos {
     position: absolute;
     inset: auto 2rem 1.5rem 2rem;
+    background-color: rgba(190, 207, 221, 0.92);
+    padding: 0.5em 0.25em;
+    border-radius: var(--border-radius);
     h3 {
       font-size: 18px;
     }
@@ -87,7 +90,7 @@
     padding: 2rem;
     border-radius: var(--border-radius);
     perspective: 150px;
-    background-color: rgb(190, 207, 221);
+    background-color: rgba(190, 207, 221, 0.92);
     box-shadow: 0.5em 0.5em 1em #1119;
   }
   .fade-enter-active,
