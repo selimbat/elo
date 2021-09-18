@@ -10,8 +10,12 @@
 
 <script>
   import "./reset.css";
+  import "./variables.css";
   export default {
     name: "App",
+    mounted() {
+      document.querySelector("body").style.overflow = "hidden";
+    },
   };
 </script>
 

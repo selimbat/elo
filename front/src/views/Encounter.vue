@@ -38,7 +38,7 @@
     position: relative;
     height: 100%;
     margin: 0 1em;
-    border-radius: 15px;
+    border-radius: var(--border-radius);
     width: 18rem;
     display: flex;
     flex-direction: column;
@@ -53,7 +53,7 @@
       margin: 0.5rem 0;
       padding: 0.5rem 0;
       background-color: salmon;
-      border-radius: 8px;
+      border-radius: var(--border-radius);
       cursor: pointer;
       transition: background-color 0.3s;
       &:hover {
