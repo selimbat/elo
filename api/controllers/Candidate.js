@@ -1,5 +1,19 @@
 const Candidate = require("../resources/Candidate");
 
+const init = () => {
+  Candidate.findOne({}, async (err,doc) => {
+    if (err){
+      console.log(err);
+      return;
+    }
+    if(!doc){
+      const candidate = new Candidate();
+      await candidate.initCandidates();
+    }
+  });
+};
+init();
+    
 exports.getAll = (req, res, next) => {
   Candidate.find()
     .then(candidates => res.status(200).json(candidates))

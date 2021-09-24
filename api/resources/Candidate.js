@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const scrapper = require('../services/CandidatesScrapperService');
 
 const candidateSchema = mongoose.Schema({
   name: { type: String, required: true },
@@ -16,5 +17,17 @@ const candidateSchema = mongoose.Schema({
   },
   desciption: { type: String }
 });
+
+candidateSchema.methods = {
+  initCandidates: async () => {
+    let candidates = await scrapper.getCandidatesFromWikipedia();
+    return this.collection.insertMany(candidates, err => {
+      if (err){
+          return console.error(err);
+      }
+      console.log("Initial candidates inserted to Collection.");
+    });
+  }
+};
 
 module.exports = mongoose.model('Candidate', candidateSchema);
