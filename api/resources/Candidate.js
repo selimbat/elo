@@ -21,6 +21,9 @@ const candidateSchema = mongoose.Schema({
 candidateSchema.methods = {
   initCandidates: async () => {
     let candidates = await scrapper.getCandidatesFromWikipedia();
+    for(let i = 0; i < candidates.length; i++) {
+      candidates[i].score = 0;
+    }
     return this.collection.insertMany(candidates, err => {
       if (err){
           return console.error(err);
