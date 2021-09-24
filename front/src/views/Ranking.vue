@@ -1,16 +1,16 @@
 <template>
   <div class="ranking">
-    <CandidatesList />
+    <CardCaroussel />
   </div>
 </template>
 
 <script>
-  import CandidatesList from "@/components/CandidatesList.vue";
+  import CardCaroussel from "@/components/CardCaroussel.vue";
 
   export default {
     name: "Ranking",
     components: {
-      CandidatesList,
+      CardCaroussel,
     },
   };
 </script>

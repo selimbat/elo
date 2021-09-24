@@ -14,7 +14,7 @@
   export default {
     name: "App",
     mounted() {
-      document.querySelector("body").style.overflow = "hidden";
+      document.querySelector("body").style.overflowY = "hidden";
     },
   };
 </script>
@@ -30,6 +30,9 @@
 
   #nav {
     padding: 30px;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   #nav a {

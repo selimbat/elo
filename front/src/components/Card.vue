@@ -11,7 +11,7 @@
       <h3>{{ party ? party : "Indépendant.e" }}</h3>
     </div>
     <transition name="fade">
-      <div class="center-details" v-if="hover">
+      <div class="center-details" v-if="enableInfos && hover">
         <p class="details" ref="details">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad
           reprehenderit officiis accusantium dolore dolorum perspiciatis ab
@@ -32,6 +32,10 @@
         required: true,
       },
       party: String,
+      enableInfos: {
+        type: Boolean,
+        default: true,
+      },
     },
     data() {
       return {
@@ -46,7 +50,7 @@
         var y = (ev.clientY - rect.top) / rect.height;
         x = 2 * x - 1;
         y = 2 * y - 1;
-        el.style.transform = `rotateX(${10 * Math.abs(y)}deg)
+        el.style.transform = `rotateX(${10 * y}deg)
         rotateY(${-10 * x}deg) translate(${-2 * x}em,${-2 * y}em)`;
       },
     },
@@ -61,7 +65,8 @@
     width: 20rem;
     margin: 0 1em;
     border-radius: var(--border-radius);
-    background-image: url(https://random.imagecdn.app/500/500);
+    //background-image: url(https://random.imagecdn.app/500/500);
+    background-color: lavenderblush;
   }
   .card > .infos {
     position: absolute;
