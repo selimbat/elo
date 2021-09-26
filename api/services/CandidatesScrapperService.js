@@ -6,7 +6,7 @@ exports.getCandidatesFromWikipedia = () => {
   return getPage(URL, formatPage);
 };
 
-formatPage = (data) => {
+formatPage = async (data) => {
   let candidates = [];
   let doc = new JSDOM(data);
   let el = doc.window.document.querySelector("#mw-content-text > .mw-parser-output > table.wikitable > tbody");
@@ -22,7 +22,8 @@ formatPage = (data) => {
       name: partyNode.firstChild?.textContent ?? partyNode.textContent,
       wikipediaUrl: partyNode.firstChild ? "https://www.wikipedia.org" + partyNode.firstChild.href : '',
     };
-    candidate.imgUrl = "https://commons.wikimedia.org" + el.children[i].children[1].children[0].href.replace("Fichier",'File');
+    const tempImgUrl = "https://commons.wikimedia.org" + el.children[i].children[1].children[0].href.replace("Fichier",'File');
+    candidate.imgUrl = await getPage(tempImgUrl, getImgUrlFromFilePage);
 
     let occupationsStr = el.children[i].children[3].textContent.replace("\n", "");
     let occupations = [];
@@ -41,6 +42,12 @@ formatPage = (data) => {
     candidates.push(candidate);
   }
   return candidates;
+};
+
+getImgUrlFromFilePage = (data) => {
+  let doc = new JSDOM(data);
+  let el = doc.window.document.querySelector("#file > a");
+  return el.href;
 };
 
 // https.get promise wrapper

@@ -7,8 +7,10 @@
     @mousemove="parallax"
   >
     <div class="infos">
-      <h2>{{ name }}</h2>
-      <h3>{{ party ? party : "Indépendant.e" }}</h3>
+      <h2>{{ candidate.name }}</h2>
+      <h3>
+        {{ candidate.party.name ? candidate.party.name : "Indépendant.e" }}
+      </h3>
     </div>
     <transition name="fade">
       <div class="center-details" v-if="enableInfos && hover">
@@ -27,11 +29,10 @@
   export default {
     name: "Card",
     props: {
-      name: {
-        type: String,
+      candidate: {
+        type: Object,
         required: true,
       },
-      party: String,
       enableInfos: {
         type: Boolean,
         default: true,
@@ -41,6 +42,9 @@
       return {
         hover: false,
       };
+    },
+    mounted() {
+      this.$refs.card.style.backgroundImage = `url(${this.candidate.imgUrl})`;
     },
     methods: {
       parallax(ev) {
@@ -66,8 +70,8 @@
     width: 20rem;
     margin: 0 1em;
     border-radius: var(--border-radius);
-    //background-image: url(https://random.imagecdn.app/500/500);
-    background-color: lavenderblush;
+    background-size: cover;
+    background-position: center;
   }
   .card > .infos {
     position: absolute;

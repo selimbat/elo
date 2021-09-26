@@ -3,8 +3,7 @@
     <Card
       v-for="candidate in candidates"
       :key="candidate.name"
-      :name="candidate.name"
-      :party="candidate.party"
+      :candidate="candidate"
       :enableInfos="false"
     />
   </section>
@@ -25,56 +24,10 @@
     },
     mounted() {
       this.getCandidates();
-      console.log(window.pageXOffset);
       window.pageXOffset = 100;
-      console.log(window.pageXOffset);
     },
     methods: {
       getCandidates() {
-        this.candidates = [
-          {
-            name: "Batman",
-            party: "Make Gotham great again",
-            score: -10,
-          },
-          {
-            name: "Superman",
-            party: "I beleive I can fly",
-            score: -1,
-          },
-          {
-            name: "Green Lantern",
-            party: "There will be light",
-            score: 2,
-          },
-          {
-            name: "Harley Quinn",
-            party: "You won't regret it, Hon'",
-            score: 9999,
-          },
-          {
-            name: "The Flash",
-            party: "🏃‍♂️🏃‍♂️🏃‍♂️",
-            score: 0,
-          },
-          {
-            name: "Spiderman",
-            party: "Into the Spiderverse",
-            score: -4,
-          },
-          {
-            name: "Wonderwoman",
-            party: "Dunno",
-            score: -8,
-          },
-          {
-            name: "Joker",
-            party: "I'll burn it to the ground",
-            score: 30,
-          },
-        ];
-        this.candidates = this.candidates.sort((c1, c2) => c1.score < c2.score);
-        /*
         const axios = require("axios");
         var vm = this;
         axios
@@ -88,7 +41,7 @@
           .then(function() {
             // always executed
           });
-          */
+        this.candidates = this.candidates.sort((c1, c2) => c1.score < c2.score);
       },
     },
   };
