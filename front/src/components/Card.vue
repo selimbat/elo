@@ -44,6 +44,7 @@
     },
     methods: {
       parallax(ev) {
+        if (!this.enableInfos || !this.hover) return;
         var el = this.$refs.details;
         var rect = this.$refs.card.getBoundingClientRect();
         var x = (ev.clientX - rect.left) / rect.width;
