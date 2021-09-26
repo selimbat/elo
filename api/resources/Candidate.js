@@ -24,7 +24,7 @@ candidateSchema.methods = {
     for(let i = 0; i < candidates.length; i++) {
       candidates[i].score = 0;
     }
-    return this.collection.insertMany(candidates, err => {
+    return mongoose.model('Candidate').insertMany(candidates, err => {
       if (err){
           return console.error(err);
       }

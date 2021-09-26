@@ -1,16 +1,20 @@
 const Candidate = require("../resources/Candidate");
 
 const init = () => {
-  Candidate.findOne({}, async (err,doc) => {
-    if (err){
-      console.log(err);
-      return;
-    }
-    if(!doc){
-      const candidate = new Candidate();
-      await candidate.initCandidates();
-    }
-  });
+  try{
+    Candidate.findOne({}, async (err,doc) => {
+      if (err){
+        console.log(err);
+        return;
+      }
+      if(!doc){
+        const candidate = new Candidate();
+        await candidate.initCandidates();
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 init();
     

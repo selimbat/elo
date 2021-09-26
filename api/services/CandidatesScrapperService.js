@@ -22,7 +22,7 @@ formatPage = (data) => {
       name: partyNode.firstChild?.textContent ?? partyNode.textContent,
       wikipediaUrl: partyNode.firstChild ? "https://www.wikipedia.org" + partyNode.firstChild.href : '',
     };
-    candidate.imgUrlTemp = "https://commons.wikimedia.org" + el.children[i].children[1].children[0].href.replace("Fichier",'File');
+    candidate.imgUrl = "https://commons.wikimedia.org" + el.children[i].children[1].children[0].href.replace("Fichier",'File');
 
     let occupationsStr = el.children[i].children[3].textContent.replace("\n", "");
     let occupations = [];
