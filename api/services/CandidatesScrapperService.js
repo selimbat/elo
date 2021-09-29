@@ -4,9 +4,9 @@ var fs = require('fs');
 const { resolve } = require('path');
 const SOURCE_URL = "https://fr.wikipedia.org/wiki/Candidats_%C3%A0_l'%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2022";
 
-exports.getCandidates = () => {
-  console.log("Fetching candidates from the internet.")
-  return getPage(SOURCE_URL, formatPage);
+exports.getCandidates = async () => {
+  console.log("Fetching candidates from the internet.");
+  return await getPage(SOURCE_URL, formatPage);
 };
 
 formatPage = async (data) => {

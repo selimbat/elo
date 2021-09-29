@@ -4,20 +4,16 @@ const db = require("./db");
 
 
 initCandidates = async (overwrite, submit) => {
-  try{
-    await Candidate.findOne({}, async (err, doc) => {
-      if (err){
-        throw err;
-      }
-      if(overwrite || !doc){
-        const candidate = new Candidate();
-        await candidate.initCandidates(scrapper, submit);
-        return true;
-      } else {
-        console.log("Found at least a document in the collection.")
-        return false;
-      }
-    });
+  try {
+    const doc = await Candidate.findOne({});
+    if(overwrite || !doc){
+      const candidate = new Candidate();
+      await candidate.initCandidates(scrapper, submit);
+      return true;
+    } else {
+      console.log("Found at least a document in the collection.")
+      return false;
+    }
   } catch (err) {
     console.log(err);
     return false;
