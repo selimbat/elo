@@ -1,9 +1,12 @@
 const https = require('https');
 const { JSDOM } = require('jsdom');
-const URL = "https://fr.wikipedia.org/wiki/Candidats_%C3%A0_l'%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2022";
+var fs = require('fs');
+const { resolve } = require('path');
+const SOURCE_URL = "https://fr.wikipedia.org/wiki/Candidats_%C3%A0_l'%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2022";
 
-  return getPage(URL, formatPage);
 exports.getCandidates = () => {
+  console.log("Fetching candidates from the internet.")
+  return getPage(SOURCE_URL, formatPage);
 };
 
 formatPage = async (data) => {
@@ -41,6 +44,7 @@ formatPage = async (data) => {
     
     candidates.push(candidate);
   }
+  await downloadImages(candidates);
   return candidates;
 };
 
@@ -50,6 +54,44 @@ getImgUrlFromFilePage = (data) => {
   return el.href;
 };
 
+downloadImages = async (candidates) => {
+  console.log("Downloading candidates images from the internet.")
+  return new Promise(async (resolve, reject) => {
+    try {
+      await Promise.all(candidates.map(async c => {
+        let filename = `./public/img/${c.name.toLowerCase().replace(/\s+/g, "_")}.jpg`;
+        await downloadImage(c.imgUrl, filename);
+        c.imgUrl = filename; // change the link to the downloaded file
+      }))
+      console.log("Successfully downloaded candidates images.");
+      resolve();
+    } catch (err) {
+      console.log(`Failed to download images : ${err}`);
+      reject(err);
+    }
+  })
+}
+
+downloadImage = (url, filepath) => {
+  return new Promise((resolve, reject) => {
+    const options = {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0", //necessary to avoid 403 from Wikipedia
+      }
+    };
+    https.get(url, options, (res) => {
+      if (res.statusCode === 200) {
+        res.pipe(fs.createWriteStream(filepath))
+          .on('error', reject)
+          .once('close', resolve);
+      } else {
+        // Consume response data to free up memory
+        res.resume();
+        reject(new Error(`Request for ${url} Failed With a Status Code: ${res.statusCode}`));
+      }
+    });
+  });
+}
 // https.get promise wrapper
 getPage = async (url, callback) => {
   return new Promise((resolve, reject) => {
@@ -60,10 +102,11 @@ getPage = async (url, callback) => {
         }) 
 
         res.on('end', () => {
-            resolve(callback(data));
+          resolve(callback(data));
         })
       }).on("error", (error) => {
-        reject("Error: " + error.message);
+        console.log("Error: " + error.message);
+        reject();
       });
   })
 };
