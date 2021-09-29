@@ -2,8 +2,8 @@ const https = require('https');
 const { JSDOM } = require('jsdom');
 const URL = "https://fr.wikipedia.org/wiki/Candidats_%C3%A0_l'%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2022";
 
-exports.getCandidatesFromWikipedia = () => {
   return getPage(URL, formatPage);
+exports.getCandidates = () => {
 };
 
 formatPage = async (data) => {

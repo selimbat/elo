@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "node node_modules/nodemon/bin/nodemon.js server.js",
+    "prov": "node provisionning.js",
     "test": "jest --watchAll --verbose"
   },
   "author": "https://github.com/selimbat",
