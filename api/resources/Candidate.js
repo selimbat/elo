@@ -8,13 +8,13 @@ const candidateSchema = mongoose.Schema({
   wikipediaUrl: { type: String },
   occupations: [{ 
     label: { type: String, required: true },
-    since: { type: Date } 
+    since: { type: Number } 
   }],
   party: {
     name: { type: String, required: true },
     wikipediaUrl: { type: String }
   },
-  desciption: { type: String }
+  description: { type: String }
 });
 
 candidateSchema.methods = {

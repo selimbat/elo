@@ -5,9 +5,7 @@
     @mouseover="hover = true"
     @mouseleave="hover = false"
     @mousemove="parallax"
-    :style="{
-      backgroundImage: `url(${this.candidate ? this.candidate.imgUrl : ''})`,
-    }"
+    :style="{ backgroundImage: `url(${candidate ? candidate.imgUrl : ''})` }"
     :class="{ loading: loading }"
   >
     <div class="infos" v-if="!loading">
@@ -21,12 +19,9 @@
       <span class="skeleton-text"></span>
     </div>
     <transition name="fade">
-      <div class="center-details" v-if="enableInfos && hover">
+      <div class="center-details" v-if="enableInfos && !loading && hover">
         <p class="details" ref="details">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad
-          reprehenderit officiis accusantium dolore dolorum perspiciatis ab
-          labore, exercitationem accusamus rem laboriosam maiores. Officia
-          numquam dolore recusandae quasi blanditiis cum excepturi?
+          {{ candidate.description }}
         </p>
       </div>
     </transition>
