@@ -5,9 +5,9 @@
     <div class="input">
       <p id="is">est :</p>
       <div class="actions">
-        <a>plus à gauche</a>
-        <a>pareil</a>
-        <a>plus à droite</a>
+        <a @click="postEncounter(possibleOutcomes.MORE_LEFT)">plus à gauche</a>
+        <a @click="postEncounter(possibleOutcomes.SIMILAR)">pareil</a>
+        <a @click="postEncounter(possibleOutcomes.MORE_RIGHT)">plus à droite</a>
       </div>
       <p id="than">que</p>
     </div>
@@ -32,12 +32,32 @@
           name: "Superman",
         },
         isDataLoaded: false,
+        possibleOutcomes: {
+          MORE_RIGHT: -1,
+          SIMILAR: 0,
+          MORE_LEFT: 1,
+        },
       };
     },
     created() {
-      this.getTwoCandidates();
+      this.reset();
     },
     methods: {
+      postEncounter(outcome) {
+        console.log(
+          `${this.candidate1.name} est ${
+            outcome < 0
+              ? "plus à droite"
+              : outcome > 0
+              ? "plus à gauche"
+              : "pareil"
+          } que ${this.candidate2.name}.`
+        );
+        this.reset();
+      },
+      reset() {
+        this.getTwoCandidates();
+      },
       async getTwoCandidates() {
         const axios = require("axios");
         var vm = this;
