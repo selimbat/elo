@@ -5,12 +5,20 @@
     @mouseover="hover = true"
     @mouseleave="hover = false"
     @mousemove="parallax"
+    :style="{
+      backgroundImage: `url(${this.candidate ? this.candidate.imgUrl : ''})`,
+    }"
+    :class="{ loading: loading }"
   >
-    <div class="infos">
+    <div class="infos" v-if="!loading">
       <h2>{{ candidate.name }}</h2>
       <h3>
         {{ candidate.party.name ? candidate.party.name : "Indépendant.e" }}
       </h3>
+    </div>
+    <div class="infos" v-if="loading">
+      <span class="skeleton-text"></span>
+      <span class="skeleton-text"></span>
     </div>
     <transition name="fade">
       <div class="center-details" v-if="enableInfos && hover">
@@ -31,20 +39,20 @@
     props: {
       candidate: {
         type: Object,
-        required: true,
       },
       enableInfos: {
         type: Boolean,
         default: true,
+      },
+      loading: {
+        type: Boolean,
+        default: false,
       },
     },
     data() {
       return {
         hover: false,
       };
-    },
-    mounted() {
-      this.$refs.card.style.backgroundImage = `url(${this.candidate.imgUrl})`;
     },
     methods: {
       parallax(ev) {
@@ -73,6 +81,9 @@
     background-size: cover;
     background-position: center;
   }
+  .card.loading {
+    background-color: rgb(172, 231, 255);
+  }
   .card > .infos {
     position: absolute;
     inset: auto 2rem 1.5rem 2rem;
@@ -81,6 +92,18 @@
     border-radius: var(--border-radius);
     h3 {
       font-size: 18px;
+    }
+    .skeleton-text {
+      display: block;
+      height: 1ch;
+      background-color: rgb(128, 139, 148);
+      border-radius: var(--border-radius);
+      & + .skeleton-text {
+        margin-top: 0.3ch;
+      }
+      &:first-of-type {
+        width: 70%;
+      }
     }
   }
   .center-details {

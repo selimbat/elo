@@ -1,6 +1,7 @@
 <template>
   <section>
-    <Card name="Batman" party="Make Gotham Great Again"></Card>
+    <Card v-if="!isDataLoaded" :loading="true"></Card>
+    <Card v-if="isDataLoaded" :candidate="candidate1"></Card>
     <div class="input">
       <p id="is">est :</p>
       <div class="actions">
@@ -10,7 +11,8 @@
       </div>
       <p id="than">que</p>
     </div>
-    <Card name="Superman"></Card>
+    <Card v-if="!isDataLoaded" :loading="true"></Card>
+    <Card v-if="isDataLoaded" :candidate="candidate2"></Card>
   </section>
 </template>
 
@@ -20,6 +22,40 @@
     name: "Encounter",
     components: {
       Card,
+    },
+    data() {
+      return {
+        candidate1: {
+          name: "Batman",
+        },
+        candidate2: {
+          name: "Superman",
+        },
+        isDataLoaded: false,
+      };
+    },
+    created() {
+      this.getTwoCandidates();
+    },
+    methods: {
+      async getTwoCandidates() {
+        const axios = require("axios");
+        var vm = this;
+        try {
+          const response = await axios.get(
+            "http://localhost:3000/api/candidates/random-two"
+          );
+          if (response.data.length != 2) {
+            console.error("The server doesn't send two candidates.");
+            return;
+          }
+          vm.candidate1 = response.data[0];
+          vm.candidate2 = response.data[1];
+          vm.isDataLoaded = true;
+        } catch (error) {
+          console.log(error);
+        }
+      },
     },
   };
 </script>

@@ -22,9 +22,8 @@
         candidates: [],
       };
     },
-    mounted() {
+    created() {
       this.getCandidates();
-      window.pageXOffset = 100;
     },
     methods: {
       getCandidates() {
@@ -37,9 +36,6 @@
           })
           .catch(function(error) {
             console.log(error);
-          })
-          .then(function() {
-            // always executed
           });
         this.candidates = this.candidates.sort((c1, c2) => c1.score < c2.score);
       },
