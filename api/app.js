@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('./db');
+const path = require('path');
 const candidateRouter = require('./routers/candidate');
 const encounterRouter = require('./routers/Encounter');
 
@@ -15,6 +16,8 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
   next();
 });
+
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.use("/api/candidates", candidateRouter);
 app.use("/api/encounter", encounterRouter);

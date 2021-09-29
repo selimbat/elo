@@ -1,8 +1,19 @@
 const Candidate = require("../resources/Candidate");
-    
+
+resolveImgUrl = (protocol, host, candidate) => {
+  let imgUrl = candidate.imgUrl;
+  if (imgUrl.length > 0 && imgUrl[0] === "."){ // remove the first dot of the relative path
+    imgUrl = imgUrl.substring(1);
+  }
+  candidate.imgUrl = `${protocol}://${host}${imgUrl}`;
+}
+
 exports.getAll = (req, res, next) => {
   Candidate.find()
-    .then(candidates => res.status(200).json(candidates))
+    .then(candidates => {
+      candidates.forEach((c) => resolveImgUrl(req.protocol, req.get("host"), c));
+      res.status(200).json(candidates);
+    })
     .catch(error => res.status(400).json({ error }));
 };
 
@@ -19,6 +30,8 @@ exports.getRandomTwo = (req, res, next) => {
         rand = Math.floor(Math.random() * count);
         candidate2 = await Candidate.findOne().skip(rand);
       } while (candidate2._id == candidate1._id);
+      resolveImgUrl(req.protocol, req.get("host"), candidate1);
+      resolveImgUrl(req.protocol, req.get("host"), candidate2);
       res.status(200).json([candidate1, candidate2]);
     });
   } catch (error) {
@@ -28,7 +41,10 @@ exports.getRandomTwo = (req, res, next) => {
 
 exports.getOneById =  (req, res, next) => {
   Candidate.findOne({ _id: req.params.id })
-    .then(candidate => res.status(200).json(candidate))
+    .then(candidate => {
+      resolveImgUrl(req.protocol, req.get("host"), candidate);
+      res.status(200).json(candidate);
+    })
     .catch(error => res.status(404).json({ error }));
 };
 
