@@ -29,7 +29,7 @@ exports.getRandomTwo = (req, res, next) => {
       do {
         rand = Math.floor(Math.random() * count);
         candidate2 = await Candidate.findOne().skip(rand);
-      } while (candidate2._id == candidate1._id);
+      } while (candidate2._id.equals(candidate1._id));
       resolveImgUrl(req.protocol, req.get("host"), candidate1);
       resolveImgUrl(req.protocol, req.get("host"), candidate2);
       res.status(200).json([candidate1, candidate2]);
