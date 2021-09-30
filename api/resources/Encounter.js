@@ -10,8 +10,8 @@ const Outcome = {
 }
 
 const encounterSchema = mongoose.Schema({
-  candidate1Id: { type: mongoose.ObjectId, ref="Candidate", required: true },
-  candidate2Id: { type: mongoose.ObjectId, ref="Candidate", required: true },
+  candidate1Id: { type: mongoose.ObjectId, ref:"Candidate", required: true },
+  candidate2Id: { type: mongoose.ObjectId, ref:"Candidate", required: true },
   outcome: { 
     type: Number,
     required: true,
