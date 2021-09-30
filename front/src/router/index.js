@@ -9,11 +9,13 @@ const routes = [
   {
     path: '/',
     name: 'Encounter',
+    meta: { horizontalScroll: false },
     component: Encounter
   },
   {
     path: '/ranking',
     name: 'Ranking',
+    meta: { horizontalScroll: true },
     component: Ranking
   }
 ]

@@ -14,7 +14,22 @@
   export default {
     name: "App",
     mounted() {
-      document.querySelector("body").style.overflowY = "hidden";
+      this.configScroll(this.$route);
+    },
+    watch: {
+      $route(to) {
+        this.configScroll(to);
+      },
+    },
+    methods: {
+      configScroll(route) {
+        document.querySelector("body").style.overflowY = "hidden";
+        if (route.meta.horizontalScroll) {
+          document.querySelector("body").style.overflowX = "visible";
+        } else {
+          document.querySelector("body").style.overflowX = "hidden";
+        }
+      },
     },
   };
 </script>
