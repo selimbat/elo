@@ -32,12 +32,11 @@
         axios
           .get("http://localhost:3000/api/candidates")
           .then(function(response) {
-            vm.candidates = response.data;
+            vm.candidates = response.data.sort((c1, c2) => c1.score < c2.score);
           })
           .catch(function(error) {
             console.log(error);
           });
-        this.candidates = this.candidates.sort((c1, c2) => c1.score < c2.score);
       },
     },
   };
