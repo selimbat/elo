@@ -9,15 +9,23 @@ const Outcome = {
   MORE_RIGHT: -1
 }
 
+/**
+ * @param {Number} outcome 
+ * @returns true if outcome valid, false otherwise
+ */
+const checkOutcomeValidity = (outcome) => {
+  return Object.values(Outcome).indexOf(outcome) >= 0;
+}
+
 const encounterSchema = mongoose.Schema({
   candidate1Id: { type: mongoose.ObjectId, ref:"Candidate", required: true },
   candidate2Id: { type: mongoose.ObjectId, ref:"Candidate", required: true },
   outcome: { 
     type: Number,
     required: true,
-    enum: {
-      values: Object.values(Outcome),
-      message: "Unsupported outcome value ({VALUE}) for Encounter."
+    validate: {
+      validator: checkOutcomeValidity,
+      message: "The given value for 'outcome' isn't valid."
     }
   },
   timestamp: { type: Date, required: true, default: Date.now },

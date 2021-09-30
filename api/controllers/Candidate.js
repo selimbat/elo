@@ -35,7 +35,7 @@ exports.getRandomTwo = (req, res, next) => {
       res.status(200).json([candidate1, candidate2]);
     });
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json({ error });
   }
 };
 

@@ -69,7 +69,6 @@ class EloService {
    * @returns the difference to apply the candidate's score. Can be either positive or negative.
    */
   static GetScoreUpdate(outcome, probablity){
-    Encounter.checkOutcomeValidity(outcome);
     outcome = (outcome + 1) / 2; // transforming int outcome to a 0, 0.5 or 1 value for the Elo formula
     return this.COEF * (outcome - probablity);
   }

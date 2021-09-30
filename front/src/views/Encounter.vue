@@ -43,16 +43,19 @@
       this.reset();
     },
     methods: {
-      postEncounter(outcome) {
-        console.log(
-          `${this.candidate1.name} est ${
-            outcome < 0
-              ? "plus à droite"
-              : outcome > 0
-              ? "plus à gauche"
-              : "pareil"
-          } que ${this.candidate2.name}.`
-        );
+      async postEncounter(outcome) {
+        const axios = require("axios");
+        var vm = this;
+        try {
+          await axios.post("http://localhost:3000/api/encounter", {
+            candidate1Id: vm.candidate1._id,
+            candidate2Id: vm.candidate2._id,
+            outcome: outcome,
+            originIPAddress: "TODO: Find a way to get the ip",
+          });
+        } catch (error) {
+          console.error(error);
+        }
         this.reset();
       },
       reset() {
@@ -73,7 +76,7 @@
           vm.candidate2 = response.data[1];
           vm.isDataLoaded = true;
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       },
     },

@@ -19,6 +19,6 @@ exports.registerOne = async (req, res, next) => {
       message: `Encounter between candidates of id ${encounterResult.items[0].candidateId} and ${encounterResult.items[1].candidateId} succeffully registered. The winner gained ${Math.abs(encounterResult.items[0].scoreDiff)}`
     });
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json({message: error.message});
   }
 };
