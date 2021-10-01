@@ -16,6 +16,8 @@
 
 <script>
   import Card from "@/components/Card.vue";
+  import api from "@/services/apiService.js";
+
   export default {
     name: "Encounter",
     components: {
@@ -42,40 +44,14 @@
     },
     methods: {
       async postEncounter(outcome) {
-        const axios = require("axios");
-        var vm = this;
-        try {
-          await axios.post("http://localhost:3000/api/encounter", {
-            candidate1Id: vm.candidate1._id,
-            candidate2Id: vm.candidate2._id,
-            outcome: outcome,
-            originIPAddress: "TODO: Find a way to get the ip",
-          });
-        } catch (error) {
-          console.error(error);
-        }
+        api.postEncounter(this.candidate1._id, this.candidate2._id, outcome);
         this.reset();
       },
-      reset() {
-        this.getTwoCandidates();
-      },
-      async getTwoCandidates() {
-        const axios = require("axios");
-        var vm = this;
-        try {
-          const response = await axios.get(
-            "http://localhost:3000/api/candidates/random-two"
-          );
-          if (response.data.length != 2) {
-            console.error("The server doesn't send two candidates.");
-            return;
-          }
-          vm.candidate1 = response.data[0];
-          vm.candidate2 = response.data[1];
-          vm.isDataLoaded = true;
-        } catch (error) {
-          console.error(error);
-        }
+      async reset() {
+        let candidates = await api.getTwoRandomCandidates();
+        this.candidate1 = candidates[0];
+        this.candidate2 = candidates[1];
+        this.isDataLoaded = true;
       },
     },
   };

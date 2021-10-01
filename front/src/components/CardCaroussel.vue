@@ -11,6 +11,7 @@
 
 <script>
   import Card from "@/components/Card.vue";
+  import api from "@/services/apiService.js";
 
   export default {
     name: "CardCaroussel",
@@ -37,17 +38,8 @@
       window.scrollTo(maxScroll / 2, 0);
     },
     methods: {
-      getCandidates() {
-        const axios = require("axios");
-        var vm = this;
-        axios
-          .get("http://localhost:3000/api/candidates")
-          .then(function(response) {
-            vm.candidates = response.data.sort((c1, c2) => c1.score < c2.score);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+      async getCandidates() {
+        this.candidates = await api.getAllCandidates();
       },
     },
   };
