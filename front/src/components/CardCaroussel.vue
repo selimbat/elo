@@ -25,6 +25,17 @@
     created() {
       this.getCandidates();
     },
+    updated() {
+      let maxScroll =
+        Math.max(
+          document.body.scrollWidth,
+          document.body.offsetWidth,
+          document.documentElement.clientWidth,
+          document.documentElement.scrollWidth,
+          document.documentElement.offsetWidth
+        ) - window.innerWidth;
+      window.scrollTo(maxScroll / 2, 0);
+    },
     methods: {
       getCandidates() {
         const axios = require("axios");
