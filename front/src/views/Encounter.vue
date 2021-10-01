@@ -1,7 +1,6 @@
 <template>
   <section>
-    <Card v-if="!isDataLoaded" :loading="true"></Card>
-    <Card v-if="isDataLoaded" :candidate="candidate1"></Card>
+    <Card :loading="!isDataLoaded" :candidate="candidate1"></Card>
     <div class="input">
       <p id="is">est :</p>
       <div class="actions">
@@ -11,8 +10,7 @@
       </div>
       <p id="than">que</p>
     </div>
-    <Card v-if="!isDataLoaded" :loading="true"></Card>
-    <Card v-if="isDataLoaded" :candidate="candidate2"></Card>
+    <Card :loading="!isDataLoaded" :candidate="candidate2"></Card>
   </section>
 </template>
 
