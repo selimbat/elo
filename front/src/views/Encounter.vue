@@ -44,10 +44,13 @@
     },
     methods: {
       async postEncounter(outcome) {
-        api.postEncounter(this.candidate1._id, this.candidate2._id, outcome);
-        this.reset();
+        if (this.isDataLoaded) {
+          api.postEncounter(this.candidate1._id, this.candidate2._id, outcome);
+          this.reset();
+        }
       },
       async reset() {
+        this.isDataLoaded = false;
         let candidates = await api.getTwoRandomCandidates();
         this.candidate1 = candidates[0];
         this.candidate2 = candidates[1];
