@@ -2,7 +2,7 @@
   <section>
     <Card :loading="!isDataLoaded" :candidate="candidate1"></Card>
     <div class="input">
-      <p id="is">est :</p>
+      <p id="is">est</p>
       <div class="actions">
         <a @click="postEncounter(possibleOutcomes.MORE_LEFT)">plus à gauche</a>
         <a @click="postEncounter(possibleOutcomes.SIMILAR)">pareil</a>
@@ -78,36 +78,56 @@
     width: 18rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
   }
   .actions {
     display: flex;
     flex-direction: column;
     & > a {
       --side-padding: 1.1rem;
-      width: calc(50% - var(--side-padding));
+      box-sizing: border-box;
+      width: 50%;
       margin: 0.5rem 0;
       padding: 0.5rem 0;
-      background-color: salmon;
       border-radius: var(--border-radius);
       cursor: pointer;
+      box-shadow: 0.2em 0.2em 1em #aeb4ca;
       transition: background-color 0.3s;
-      &:hover {
-        background-color: sandybrown;
+
+      @mixin buttonColor($color, $hover-color, $text-color) {
+        background-color: $color;
+        color: $text-color;
+        &:hover {
+          background-color: $hover-color;
+        }
+      }
+
+      &:nth-child(1),
+      &:nth-child(3) {
+        @include buttonColor(
+          var(--accent-color),
+          var(--accent-color-light),
+          var(--accent-text-color)
+        );
+      }
+      &:nth-child(1) {
+        text-align: left;
+        padding-left: var(--side-padding);
+      }
+      &:nth-child(2) {
+        @include buttonColor(#f7f7fa, #fff, var(--text-color));
+        align-self: center;
+      }
+      &:nth-child(3) {
+        align-self: end;
+        text-align: right;
+        padding-right: var(--side-padding);
       }
     }
-    & > a:nth-child(1) {
-      text-align: left;
-      padding-left: var(--side-padding);
-    }
-    & > a:nth-child(2) {
-      align-self: center;
-    }
-    & > a:nth-child(3) {
-      align-self: end;
-      text-align: right;
-      padding-right: var(--side-padding);
-    }
+  }
+  #is,
+  #than {
+    font-size: 1.5em;
   }
   #is {
     text-align: left;
