@@ -52,9 +52,17 @@
     transform: translateY(-50%);
     display: flex;
     height: 70vh;
-    width: 100%;
+    padding: 0 1em;
     > * {
       flex-shrink: 0;
+    }
+    > .card {
+      &:first-of-type {
+        margin-left: 0;
+      }
+      &:last-of-type {
+        margin-right: 0;
+      }
     }
   }
 </style>
