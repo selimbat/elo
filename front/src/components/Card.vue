@@ -9,7 +9,8 @@
     <div
       class="image"
       :style="{
-        backgroundImage: 'url(' + (candidate ? candidate.imgUrl : '') + ')',
+        backgroundImage:
+          'url(' + (!loading && candidate ? candidate.imgUrl : '') + ')',
       }"
     >
       <transition name="fade">
