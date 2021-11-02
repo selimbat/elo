@@ -4,27 +4,34 @@
     ref="card"
     @mouseover="hover = true"
     @mouseleave="hover = false"
-    @mousemove="parallax"
-    :style="{ backgroundImage: `url(${candidate ? candidate.imgUrl : ''})` }"
     :class="{ loading: loading }"
   >
-    <div class="infos" v-if="!loading">
-      <h2>{{ candidate.name }}</h2>
-      <h3>
-        {{ candidate.party.name ? candidate.party.name : "Indépendant.e" }}
-      </h3>
+    <div
+      class="image"
+      :style="{
+        backgroundImage: 'url(' + (candidate ? candidate.imgUrl : '') + ')',
+      }"
+    >
+      <transition name="fade">
+        <div class="center-details" v-if="enableInfos && !loading && hover">
+          <p class="details" ref="details">
+            {{ candidate.description }}
+          </p>
+        </div>
+      </transition>
     </div>
     <div class="infos" v-if="loading">
       <span class="skeleton-text"></span>
       <span class="skeleton-text"></span>
     </div>
-    <transition name="fade">
-      <div class="center-details" v-if="enableInfos && !loading && hover">
-        <p class="details" ref="details">
-          {{ candidate.description }}
-        </p>
+    <div class="infos" v-else>
+      <h2>{{ candidate.name }}</h2>
+      <div class="content">
+        <h3>
+          {{ candidate.party.name ? candidate.party.name : "Indépendant.e" }}
+        </h3>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 
@@ -49,19 +56,6 @@
         hover: false,
       };
     },
-    methods: {
-      parallax(ev) {
-        if (!this.enableInfos || !this.hover) return;
-        var el = this.$refs.details;
-        var rect = this.$refs.card.getBoundingClientRect();
-        var x = (ev.clientX - rect.left) / rect.width;
-        var y = (ev.clientY - rect.top) / rect.height;
-        x = 2 * x - 1;
-        y = 2 * y - 1;
-        el.style.transform = `rotateX(${10 * y}deg)
-        rotateY(${-10 * x}deg) translate(${-2 * x}em,${-2 * y}em)`;
-      },
-    },
   };
 </script>
 
@@ -73,18 +67,33 @@
     width: 20rem;
     margin: 0 1em;
     border-radius: var(--border-radius);
-    background-size: cover;
-    background-position: center;
+    box-shadow: 0.5em 0.5em 2em #888c9e;
+    --infos-height: 25%;
+    --infos-min-height: 3.25em;
   }
-  .card.loading {
+  .card > .image {
+    position: absolute;
+    inset: 0 0 unquote("max(var(--infos-height), var(--infos-min-height))") 0; //sass compiler is broken when using max() with var() or calc()
+    height: calc(100% - var(--infos-height));
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    background-size: cover;
+    background-position: top;
+  }
+
+  .card.loading > .image {
     background-color: rgb(172, 231, 255);
   }
   .card > .infos {
     position: absolute;
-    inset: auto 2rem 1.5rem 2rem;
-    background-color: rgba(190, 207, 221, 0.92);
-    padding: 0.5em 0.25em;
-    border-radius: var(--border-radius);
+    inset: calc(100% - max(var(--infos-height), var(--infos-min-height))) 0 0 0;
+    background-color: rgb(250, 250, 250);
+    padding: 0.5em 0.5em;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    text-align: left;
+    h2 {
+      padding: 0.25em 0 0.5em 0;
+      font-size: 25px;
+    }
     h3 {
       font-size: 18px;
     }
@@ -106,9 +115,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    --ratio: 65%;
     width: 110%;
-    min-height: var(--ratio);
   }
   .details {
     box-sizing: border-box;
@@ -121,12 +128,19 @@
     background-color: rgba(190, 207, 221, 0.92);
     box-shadow: 0.5em 0.5em 1em #1119;
   }
+  /* infos hover effect transition */
   .fade-enter-active,
   .fade-leave-active {
-    transition: opacity 0.2s;
+    transition: all 0.2s;
   }
   .fade-enter,
   .fade-leave-to {
     opacity: 0;
+  }
+  .fade-enter {
+    transform: translate(-50%, -50%) translateX(-1em);
+  }
+  .fade-leave-to {
+    transform: translate(-50%, -50%) translateX(1em);
   }
 </style>
