@@ -10,7 +10,7 @@
 
 <script>
   import "./reset.css";
-  import "./variables.css";
+  import "./globals.scss";
   export default {
     name: "App",
     mounted() {
@@ -36,7 +36,7 @@
 
 <style>
   #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: "Montserrat", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;

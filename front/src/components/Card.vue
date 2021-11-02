@@ -92,6 +92,7 @@
     border-radius: 0 0 var(--border-radius) var(--border-radius);
     text-align: left;
     h2 {
+      font-weight: var(--bold-font-weight);
       padding: 0.25em 0 0.5em 0;
       font-size: 25px;
     }
