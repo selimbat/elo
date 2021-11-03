@@ -1,10 +1,14 @@
 const Candidate = require("./resources/Candidate");
+const Encounter = require("./resources/Encounter");
 const scrapper = require('./services/CandidatesScrapperService');
 const db = require("./db");
 
-
 initCandidates = async (overwrite, submit) => {
   try {
+    if (overwrite){
+      await Candidate.deleteMany();
+      await Encounter.deleteMany();
+    }
     const doc = await Candidate.findOne({});
     if(overwrite || !doc){
       const candidate = new Candidate();
