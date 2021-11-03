@@ -59,14 +59,13 @@
     },
   };
 </script>
+
 <style lang="scss" scoped>
   section {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    height: 70vh;
+    height: var(--section-height);
+    padding-top: calc((100vh - var(--section-height)) / 2);
     width: 100%;
+    display: flex;
     justify-content: center;
   }
   .input {

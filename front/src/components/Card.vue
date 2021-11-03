@@ -65,7 +65,7 @@
     font-size: 30px;
     position: relative;
     height: 100%;
-    width: 20rem;
+    width: var(--card-width);
     margin: 0 1em;
     border-radius: var(--border-radius);
     box-shadow: 0.5em 0.5em 2em #888c9e;
