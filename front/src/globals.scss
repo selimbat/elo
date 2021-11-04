@@ -10,3 +10,7 @@
 
   --bold-font-weight: 800;
 }
+
+*:focus {
+  outline: 2px dashed var(--text-color);
+}

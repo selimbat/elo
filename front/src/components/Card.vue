@@ -4,7 +4,10 @@
     ref="card"
     @mouseover="hover = true"
     @mouseleave="hover = false"
+    @focus="focus = true"
+    @blur="focus = false"
     :class="{ loading: loading }"
+    tabindex="1"
   >
     <div
       class="image"
@@ -14,7 +17,7 @@
       }"
     >
       <transition name="fade">
-        <div class="center-details" v-if="enableInfos && !loading && hover">
+        <div class="center-details" v-if="showInfos">
           <p class="details" ref="details">
             {{ candidate.description }}
           </p>
@@ -55,7 +58,13 @@
     data() {
       return {
         hover: false,
+        focus: false,
       };
+    },
+    computed: {
+      showInfos() {
+        return this.enableInfos && !this.loading && (this.hover || this.focus);
+      },
     },
   };
 </script>

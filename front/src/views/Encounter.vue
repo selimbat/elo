@@ -4,9 +4,24 @@
     <div class="input">
       <p id="is">est</p>
       <div class="actions">
-        <a @click="postEncounter(possibleOutcomes.MORE_LEFT)">plus à gauche</a>
-        <a @click="postEncounter(possibleOutcomes.SIMILAR)">pareil</a>
-        <a @click="postEncounter(possibleOutcomes.MORE_RIGHT)">plus à droite</a>
+        <a
+          tabindex="2"
+          @click="postEncounter(possibleOutcomes.MORE_LEFT)"
+          @keyup.enter="postEncounter(possibleOutcomes.MORE_LEFT)"
+          >plus à gauche</a
+        >
+        <a
+          tabindex="3"
+          @click="postEncounter(possibleOutcomes.SIMILAR)"
+          @keyup.enter="postEncounter(possibleOutcomes.SIMILAR)"
+          >pareil</a
+        >
+        <a
+          tabindex="4"
+          @click="postEncounter(possibleOutcomes.MORE_RIGHT)"
+          @keyup.enter="postEncounter(possibleOutcomes.MORE_RIGHT)"
+          >plus à droite</a
+        >
       </div>
       <p id="than">que</p>
     </div>
@@ -96,7 +111,8 @@
       @mixin buttonColor($color, $hover-color, $text-color) {
         background-color: $color;
         color: $text-color;
-        &:hover {
+        &:hover,
+        &:focus {
           background-color: $hover-color;
         }
       }
