@@ -1,7 +1,7 @@
 <template>
   <div class="ranking">
     <CardCaroussel @data-loaded="registerRatio" />
-    <Spectrum :leftRatio="leftRatio" />
+    <Spectrum v-if="leftRatio" :leftRatio="leftRatio" />
   </div>
 </template>
 
@@ -32,7 +32,7 @@
     },
     data() {
       return {
-        leftRatio: 0.5,
+        leftRatio: undefined,
       };
     },
     methods: {
