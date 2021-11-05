@@ -1,4 +1,5 @@
 const Candidate = require("../resources/Candidate");
+const EncounterTracker = require("../resources/EncounterTracker");
 
 resolveImgUrl = (protocol, host, candidate) => {
   let imgUrl = candidate.imgUrl;
@@ -8,13 +9,23 @@ resolveImgUrl = (protocol, host, candidate) => {
   candidate.imgUrl = `${protocol}://${host}${imgUrl}`;
 }
 
-exports.getAll = (req, res, next) => {
-  Candidate.find()
-    .then(candidates => {
-      candidates.forEach((c) => resolveImgUrl(req.protocol, req.get("host"), c));
-      res.status(200).json(candidates);
-    })
-    .catch(error => res.status(400).json({ error }));
+exports.getAll = async (req, res, next) => {
+  try {
+    let candidates = await Candidate.find();
+    candidates.forEach((c) => resolveImgUrl(req.protocol, req.get("host"), c));
+    let trackersMap = {};
+    (await EncounterTracker.find()).forEach((t) => {
+      const { nb1IsMoreLeftThan2, nbSimilar, nb1IsMoreRightThan2 } = t;
+      trackersMap[`${t.candidate1Id}:${t.candidate2Id}`] = { 
+        nb1IsMoreLeftThan2,
+        nbSimilar,
+        nb1IsMoreRightThan2
+      };
+    });
+    res.status(200).json({ candidates, trackersMap });
+  } catch (error) {
+    res.status(400).json({ error });
+  }
 };
 
 exports.getRandomTwo = (req, res, next) => {

@@ -21,6 +21,7 @@
     data() {
       return {
         candidates: [],
+        trackersMap: {},
       };
     },
     created() {
@@ -39,7 +40,11 @@
     },
     methods: {
       async getCandidates() {
-        this.candidates = await api.getAllCandidates();
+        const response = await api.getAllCandidates();
+        this.candidates = response.data.candidates.sort(
+          (c1, c2) => c1.score < c2.score
+        );
+        this.trackersMap = response.data.trackersMap;
         this.$emit("data-loaded", this.computeLeftistsRatio());
       },
       computeLeftistsRatio() {

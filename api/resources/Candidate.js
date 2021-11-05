@@ -17,7 +17,7 @@ const candidateSchema = mongoose.Schema({
   description: { type: String }
 });
 
-candidateSchema.methods = {
+candidateSchema.statics = {
   initCandidates: async (source, submit) => {
     let candidates = await source.getCandidates();
     for(let i = 0; i < candidates.length; i++) {

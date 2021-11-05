@@ -7,7 +7,7 @@ const Outcome = {
   MORE_LEFT: 1,
   SIMILAR: 0,
   MORE_RIGHT: -1
-}
+};
 
 /**
  * @param {Number} outcome 
@@ -15,7 +15,7 @@ const Outcome = {
  */
 const checkOutcomeValidity = (outcome) => {
   return Object.values(Outcome).indexOf(outcome) >= 0;
-}
+};
 
 const encounterSchema = mongoose.Schema({
   candidate1Id: { type: mongoose.ObjectId, ref:"Candidate", required: true },
@@ -31,5 +31,11 @@ const encounterSchema = mongoose.Schema({
   timestamp: { type: Date, required: true, default: Date.now },
   originIPAddress: { type: String, required: true}
 });
+
+encounterSchema.statics = {
+  getOutcomeEnum() {
+    return Outcome;
+  }
+};
 
 module.exports = mongoose.model('Encounter', encounterSchema);

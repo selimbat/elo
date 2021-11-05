@@ -1,5 +1,6 @@
 const Encounter = require("../resources/Encounter");
-const EloService = require("../services/EloService")
+const EncounterTracker = require("../resources/EncounterTracker");
+const EloService = require("../services/EloService");
 
 exports.registerOne = async (req, res, next) => {
   try {
@@ -15,6 +16,11 @@ exports.registerOne = async (req, res, next) => {
     await encounter.save();
     let encounterResult = await EloService.ComputeEncounterResults(encounter);
     await EloService.SubmitEncounterResult(encounterResult);
+    let encounterTracker = await EncounterTracker.tryGet(encounter.candidate1Id, encounter.candidate2Id);
+    if (encounterTracker == null) {
+      encounterTracker = await EncounterTracker.createOne(encounter.candidate1Id, encounter.candidate2Id);
+    }
+    encounterTracker.increment(encounter);
     res.status(200).json({
       message: `Encounter between candidates of id ${encounterResult.items[0].candidateId} and ${encounterResult.items[1].candidateId} succeffully registered. The winner gained ${Math.abs(encounterResult.items[0].scoreDiff)}`
     });

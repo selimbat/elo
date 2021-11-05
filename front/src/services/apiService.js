@@ -7,7 +7,7 @@ const buildAPIRoute = (path) => {
 exports.getAllCandidates = async () => {
   try {
     const response = await axios.get(buildAPIRoute("/candidates"));
-    return response.data.sort((c1, c2) => c1.score < c2.score);
+    return response;
   } catch (error) {
     console.error(error);
   }
