@@ -1,5 +1,6 @@
 const Candidate = require("./resources/Candidate");
 const Encounter = require("./resources/Encounter");
+const EncounterTracker = require("./resources/EncounterTracker");
 const scrapper = require('./services/CandidatesScrapperService');
 const db = require("./db");
 
@@ -8,6 +9,7 @@ initCandidates = async (overwrite, submit) => {
     if (overwrite){
       await Candidate.deleteMany();
       await Encounter.deleteMany();
+      await EncounterTracker.deleteMany();
     }
     const doc = await Candidate.findOne({});
     if(overwrite || !doc){

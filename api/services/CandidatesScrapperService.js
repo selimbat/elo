@@ -16,7 +16,9 @@ formatPage = async (data) => {
   for(let i = 1; i < el.children.length; i++){
     let candidate = {};
     let nameNode = el.children[i].children[0].children[0].children[0];
-    candidate.name = nameNode.textContent;
+    ([ firstname, ...lastname ] = nameNode.textContent.split(" "));
+    candidate.firstname = firstname;
+    candidate.lastname = lastname.join(" ");
     candidate.wikipediaUrl = "https://www.wikipedia.org" + nameNode.href;
     let ageStr = el.children[i].children[0].textContent;
     candidate.age = Number(ageStr.substring(ageStr.indexOf("(") + 1, ageStr.indexOf("ans)")));
@@ -59,7 +61,7 @@ downloadImages = async (candidates) => {
   return new Promise(async (resolve, reject) => {
     try {
       await Promise.all(candidates.map(async c => {
-        let filename = `./public/img/${c.name.toLowerCase().replace(/\s+/g, "_")}.jpg`;
+        let filename = `./public/img/${(c.firstname + "_" + c.lastname).toLowerCase().replace(/\s+/g, "_")}.jpg`;
         await downloadImage(c.imgUrl, filename);
         c.imgUrl = filename; // change the link to the downloaded file
       }))

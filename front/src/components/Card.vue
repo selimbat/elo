@@ -29,7 +29,7 @@
       <span class="skeleton-text"></span>
     </div>
     <div class="infos" v-else>
-      <h2>{{ candidate.name }}</h2>
+      <h2>{{ `${candidate.firstname} ${candidate.lastname}` }}</h2>
       <div class="content">
         <h3>
           {{ candidate.party.name ? candidate.party.name : "Indépendant.e" }}

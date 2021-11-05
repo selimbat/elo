@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const candidateSchema = mongoose.Schema({
-  name: { type: String, required: true },
+  firstname: { type: String, required: true },
+  lastname: { type: String, required: true },
   birthdate: { type: Date },
   score: { type: Number, required: true },
   imgUrl: { type: String, required: true },
