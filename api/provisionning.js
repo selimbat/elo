@@ -11,8 +11,7 @@ initCandidates = async (overwrite, submit) => {
     }
     const doc = await Candidate.findOne({});
     if(overwrite || !doc){
-      const candidate = new Candidate();
-      await candidate.initCandidates(scrapper, submit);
+      await Candidate.initCandidates(scrapper, submit);
       return true;
     } else {
       console.log("Found at least a document in the collection.")
