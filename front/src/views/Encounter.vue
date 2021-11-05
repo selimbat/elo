@@ -8,18 +8,21 @@
           tabindex="2"
           @click="postEncounter(possibleOutcomes.MORE_LEFT)"
           @keyup.enter="postEncounter(possibleOutcomes.MORE_LEFT)"
+          @mousedown.prevent=""
           >plus à gauche</a
         >
         <a
           tabindex="3"
           @click="postEncounter(possibleOutcomes.SIMILAR)"
           @keyup.enter="postEncounter(possibleOutcomes.SIMILAR)"
+          @mousedown.prevent=""
           >pareil</a
         >
         <a
           tabindex="4"
           @click="postEncounter(possibleOutcomes.MORE_RIGHT)"
           @keyup.enter="postEncounter(possibleOutcomes.MORE_RIGHT)"
+          @mousedown.prevent=""
           >plus à droite</a
         >
       </div>

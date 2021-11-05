@@ -4,6 +4,7 @@
     ref="card"
     @mouseover="hover = true"
     @mouseleave="hover = false"
+    @mousedown.prevent=""
     @focus="focus = true"
     @blur="focus = false"
     :class="{ loading: loading }"
