@@ -7,7 +7,6 @@
     @focus="focus = true"
     @blur="focus = false"
     :class="{ loading: loading }"
-    tabindex="1"
   >
     <div
       class="image"
