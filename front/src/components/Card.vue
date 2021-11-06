@@ -18,9 +18,7 @@
     >
       <transition name="fade">
         <div class="center-details" v-if="showInfos">
-          <p class="details" ref="details">
-            {{ candidate.description }}
-          </p>
+          <slot></slot>
         </div>
       </transition>
     </div>
@@ -127,17 +125,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 110%;
-  }
-  .details {
-    box-sizing: border-box;
-    font-size: 18px;
-    text-align: left;
-    line-height: 1.3;
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    perspective: 150px;
-    background-color: rgba(190, 207, 221, 0.92);
-    box-shadow: 0.5em 0.5em 1em #1119;
   }
   /* infos hover effect transition */
   .fade-enter-active,

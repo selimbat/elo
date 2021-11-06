@@ -1,6 +1,8 @@
 <template>
   <section>
-    <Card :loading="!isDataLoaded" :candidate="candidate1" tabindex="1"></Card>
+    <Card :loading="!isDataLoaded" :candidate="candidate1" tabindex="1">
+      <CandidateDescription :description="candidate1.description" />
+    </Card>
     <div class="input">
       <p id="is">est</p>
       <div class="actions">
@@ -28,18 +30,22 @@
       </div>
       <p id="than">que</p>
     </div>
-    <Card :loading="!isDataLoaded" :candidate="candidate2" tabindex="5"></Card>
+    <Card :loading="!isDataLoaded" :candidate="candidate2" tabindex="5">
+      <CandidateDescription :description="candidate2.description" />
+    </Card>
   </section>
 </template>
 
 <script>
   import Card from "@/components/Card.vue";
+  import CandidateDescription from "@/components/CandidateDescription.vue";
   import api from "@/services/apiService.js";
 
   export default {
     name: "Encounter",
     components: {
       Card,
+      CandidateDescription,
     },
     data() {
       return {
