@@ -14,7 +14,7 @@
         <td class="opponent-name">
           <span>{{ candidate.lastname }}</span>
         </td>
-        <td class="proportion-display">
+        <td class="proportion-display" :style="passRatiosToStyle()">
           <div class="left"></div>
           <div class="neutral"></div>
           <div class="right"></div>
@@ -39,6 +39,22 @@
       tracker: {
         type: Object,
         required: true,
+      },
+    },
+    computed: {
+      leftRatio() {
+        return 0.12;
+      },
+      rightRatio() {
+        return 0.54;
+      },
+    },
+    methods: {
+      passRatiosToStyle() {
+        let ratiosToStyle = "";
+        ratiosToStyle += `--left-ratio: ${100 * this.leftRatio}%;`;
+        ratiosToStyle += `--right-ratio: ${100 * this.rightRatio}%;`;
+        return ratiosToStyle;
       },
     },
   };
@@ -80,7 +96,6 @@
   .opponent-name {
     text-align: right;
     padding-right: 0.5em;
-    //font-size: 0.9em;
   }
 
   .proportion-display {
