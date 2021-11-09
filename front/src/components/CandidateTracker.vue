@@ -10,11 +10,14 @@
       <span>que</span>
     </div>
     <table>
-      <tr v-for="candidate in candidates" :key="candidate.lastname">
+      <tr v-for="candidate in filteredCandidates" :key="candidate.lastname">
         <td class="opponent-name">
           <span>{{ candidate.lastname }}</span>
         </td>
-        <td class="proportion-display" :style="passRatiosToStyle()">
+        <td
+          class="proportion-display"
+          :style="passRatiosToStyle(candidate._id)"
+        >
           <div class="left"></div>
           <div class="neutral"></div>
           <div class="right"></div>
@@ -25,6 +28,8 @@
 </template>
 
 <script>
+  import TrackerService from "@/services/trackerService.js";
+
   export default {
     name: "CandidateTracker",
     props: {
@@ -36,24 +41,41 @@
         type: Array,
         required: true,
       },
-      tracker: {
+      trackersMap: {
         type: Object,
         required: true,
       },
     },
+    data() {
+      return {
+        trackerService: null,
+        leftRatio: 0.12,
+        rightRatio: 0.54,
+      };
+    },
+    created() {
+      this.trackerService = new TrackerService(
+        this.candidateIdToTrack,
+        this.trackersMap
+      );
+    },
     computed: {
-      leftRatio() {
-        return 0.12;
-      },
-      rightRatio() {
-        return 0.54;
+      filteredCandidates() {
+        return this.candidates
+          .filter(
+            (c) =>
+              c._id != this.candidateIdToTrack &&
+              this.trackerService.hasEverEncounteredCandidate(c._id)
+          )
+          .sort((c1, c2) => c1.score > c2.score);
       },
     },
     methods: {
-      passRatiosToStyle() {
+      passRatiosToStyle(opponentId) {
+        let ratios = this.trackerService.getRatiosAgainstCandidate(opponentId);
         let ratiosToStyle = "";
-        ratiosToStyle += `--left-ratio: ${100 * this.leftRatio}%;`;
-        ratiosToStyle += `--right-ratio: ${100 * this.rightRatio}%;`;
+        ratiosToStyle += `--left-ratio: ${100 * ratios.left}%;`;
+        ratiosToStyle += `--right-ratio: ${100 * ratios.right}%;`;
         return ratiosToStyle;
       },
     },

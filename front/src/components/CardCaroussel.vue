@@ -10,7 +10,7 @@
       <CandidateTracker
         :candidateIdToTrack="candidate._id"
         :candidates="candidates"
-        :tracker="trackersMap"
+        :trackersMap="trackersMap"
       />
     </Card>
   </section>
