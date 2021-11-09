@@ -67,7 +67,7 @@
               c._id != this.candidateIdToTrack &&
               this.trackerService.hasEverEncounteredCandidate(c._id)
           )
-          .sort((c1, c2) => c1.score > c2.score);
+          .sort((c1, c2) => c1.score < c2.score);
       },
     },
     methods: {
