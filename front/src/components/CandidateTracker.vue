@@ -14,13 +14,11 @@
         <td class="opponent-name">
           <span>{{ candidate.lastname }}</span>
         </td>
-        <td
-          class="proportion-display"
-          :style="passRatiosToStyle(candidate._id)"
-        >
-          <div class="left"></div>
-          <div class="neutral"></div>
-          <div class="right"></div>
+        <td class="proportion-display">
+          <div
+            class="proportions"
+            :style="passRatiosToStyle(candidate._id)"
+          ></div>
         </td>
       </tr>
     </table>
@@ -49,8 +47,6 @@
     data() {
       return {
         trackerService: null,
-        leftRatio: 0.12,
-        rightRatio: 0.54,
       };
     },
     created() {
@@ -73,9 +69,13 @@
     methods: {
       passRatiosToStyle(opponentId) {
         let ratios = this.trackerService.getRatiosAgainstCandidate(opponentId);
-        let ratiosToStyle = "";
-        ratiosToStyle += `--left-ratio: ${100 * ratios.left}%;`;
-        ratiosToStyle += `--right-ratio: ${100 * ratios.right}%;`;
+        let ratiosToStyle = "background: linear-gradient(90deg,";
+        ratiosToStyle += `var(--left-color) ${100 * ratios.left}%,`;
+        ratiosToStyle += `var(--neutral-color) ${100 * ratios.left}%,`;
+        ratiosToStyle += `var(--neutral-color) ${100 *
+          (ratios.left + ratios.neutral)}%,`;
+        ratiosToStyle += `var(--right-color) ${100 *
+          (ratios.left + ratios.neutral)}%)`;
         return ratiosToStyle;
       },
     },
@@ -115,6 +115,10 @@
     }
   }
 
+  table {
+    width: 100%;
+  }
+
   .opponent-name {
     text-align: right;
     padding-right: 0.5em;
@@ -122,30 +126,20 @@
 
   .proportion-display {
     width: 50%;
-    --border-thickness: 0.3rem;
-    --left-ratio: 45%;
-    --right-ratio: 30%;
-    .left,
-    .neutral,
-    .right {
+    .proportions {
+      --thickness: 0.3rem;
+      width: 100%;
       display: inline-block;
-      border-style: solid;
-      border-top-width: var(--border-thickness);
-      border-bottom-width: var(--border-thickness);
-      box-shadow: 1px 1px 5px var(--text-color);
-    }
-    .left {
-      width: calc(var(--left-ratio) - var(--border-thickness));
-      border-left-width: var(--border-thickness);
-      border-radius: var(--border-thickness) 0 0 var(--border-thickness);
-    }
-    .neutral {
-      width: calc(100% - var(--left-ratio) - var(--right-ratio));
-    }
-    .right {
-      width: calc(var(--right-ratio) - var(--border-thickness));
-      border-right-width: var(--border-thickness);
-      border-radius: 0 var(--border-thickness) var(--border-thickness) 0;
+      box-sizing: border-box;
+      padding: var(--thickness);
+      background: linear-gradient(
+        90deg,
+        var(--left-color) 30%,
+        var(--neutral-color) 30%,
+        var(--neutral-color) 90%,
+        var(--right-color) 90%
+      );
+      border-radius: var(--thickness);
     }
   }
 
@@ -153,7 +147,6 @@
     &::before {
       border-color: $color;
     }
-    border-color: $color;
   }
 
   .left {
