@@ -44,10 +44,6 @@
       candidate: {
         type: Object,
       },
-      enableInfos: {
-        type: Boolean,
-        default: true,
-      },
       loading: {
         type: Boolean,
         default: false,
@@ -61,7 +57,7 @@
     },
     computed: {
       showInfos() {
-        return this.enableInfos && !this.loading && (this.hover || this.focus);
+        return !this.loading && (this.hover || this.focus);
       },
     },
   };
@@ -73,11 +69,11 @@
     position: relative;
     height: 100%;
     width: var(--card-width);
-    margin: 0 1em;
+    margin: 0 1rem;
     border-radius: var(--border-radius);
-    box-shadow: 0.5em 0.5em 2em #888c9e;
+    box-shadow: 0.5rem 0.5rem 2rem #888c9e;
     --infos-height: 25%;
-    --infos-min-height: 3.25em;
+    --infos-min-height: 3.25rem;
   }
   .card > .image {
     position: absolute;
@@ -125,6 +121,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 110%;
+    z-index: 1;
   }
   /* infos hover effect transition */
   .fade-enter-active,

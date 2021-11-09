@@ -8,9 +8,6 @@
 
 <style lang="scss" scoped>
   .spectrum {
-    --left-color: red;
-    --neutral-color: white;
-    --right-color: blue;
     --arrow-size: 1em;
     height: 1em;
     position: relative;

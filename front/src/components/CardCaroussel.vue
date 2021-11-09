@@ -4,21 +4,28 @@
       v-for="(candidate, index) in candidates"
       :key="candidate.name"
       :candidate="candidate"
-      :enableInfos="false"
       :tabindex="index + 1"
-    />
-    <!--adding 1 to tabindex because 0 is a special case handled differently in each browser-->
+    >
+      <!--adding 1 to tabindex because 0 is a special case handled differently in each browser-->
+      <CandidateTracker
+        :candidateIdToTrack="candidate._id"
+        :candidates="candidates"
+        :tracker="trackersMap"
+      />
+    </Card>
   </section>
 </template>
 
 <script>
   import Card from "@/components/Card.vue";
+  import CandidateTracker from "@/components/CandidateTracker.vue";
   import api from "@/services/apiService.js";
 
   export default {
     name: "CardCaroussel",
     components: {
       Card,
+      CandidateTracker,
     },
     data() {
       return {
