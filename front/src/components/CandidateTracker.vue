@@ -22,6 +22,11 @@
         </td>
       </tr>
     </table>
+
+    <span class="total"
+      >Sur un total de
+      <b>{{ trackerService.getTotalEncounters() }}</b> rencontres.</span
+    >
   </div>
 </template>
 
@@ -93,30 +98,28 @@
     background-color: rgba(190, 207, 221, 0.92);
     box-shadow: 0.5em 0.5em 1em #1119;
   }
-  .legend {
-    margin-bottom: 0.5em;
-    & > ul {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85em;
-      & > li {
-        --line-height: 1.5em;
-        line-height: var(--line-height);
-        &::before {
-          content: "";
-          display: inline-block;
-          width: 1em;
-          border-width: 0.25em;
-          border-style: solid;
-          border-radius: var(--line-height);
-          margin: 0 0.125em 0.125em 0.125em;
-        }
+  .legend > ul {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    & > li {
+      --line-height: 1.5em;
+      line-height: var(--line-height);
+      &::before {
+        content: "";
+        display: inline-block;
+        width: 1em;
+        border-width: 0.25em;
+        border-style: solid;
+        border-radius: var(--line-height);
+        margin: 0 0.125em 0.125em 0.125em;
       }
     }
   }
 
   table {
     width: 100%;
+    margin: 0.5em 0;
   }
 
   .opponent-name {

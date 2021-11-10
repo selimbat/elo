@@ -27,7 +27,7 @@ export default class TrackerService {
       inverted = true;
     }
     let ratios = null;
-    let trackerValue = this.trackersMap.get(trackerKey);
+    const trackerValue = this.trackersMap.get(trackerKey);
     if (trackerValue != null) {
       let totalEncounters = trackerValue.nb1IsMoreLeftThan2 + trackerValue.nb1IsMoreRightThan2 + trackerValue.nbSimilar;
       ratios = {
@@ -52,5 +52,19 @@ export default class TrackerService {
    */
   hasEverEncounteredCandidate(opponentId) { 
     return this.getRatiosAgainstCandidate(opponentId) != null;
+  }
+
+  /**
+   * Returns the total number of past encounters involving the candidate to track. 
+   */
+  getTotalEncounters() {
+    let total = 0;
+    for (const [key, trackerValue] of this.trackersMap.entries()) {
+      if (!key.split(":").includes(this.candidateId)) {
+        continue;
+      }
+      total += trackerValue.nb1IsMoreLeftThan2 + trackerValue.nb1IsMoreRightThan2 + trackerValue.nbSimilar;
+    }
+    return total;
   }
 }
