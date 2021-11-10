@@ -1,5 +1,5 @@
 const Encounter = require("../resources/Encounter");
-const EncounterTracker = require("../resources/EncounterTracker");
+const EncounterTracker = require("../controllers/EncounterTracker");
 const EloService = require("../services/EloService");
 
 exports.registerOne = async (req, res, next) => {
