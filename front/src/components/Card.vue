@@ -2,8 +2,8 @@
   <div
     class="card"
     ref="card"
-    @mouseover="hover = true"
-    @mouseleave="hover = false"
+    @mouseover="onMouseOver"
+    @mouseleave="onMouseLeave"
     @mousedown.prevent=""
     @focus="focus = true"
     @blur="focus = false"
@@ -58,6 +58,16 @@
     computed: {
       showInfos() {
         return !this.loading && (this.hover || this.focus);
+      },
+    },
+    methods: {
+      onMouseOver(event) {
+        if (event.target.parentElement == this.$refs.card) {
+          this.hover = true;
+        }
+      },
+      onMouseLeave() {
+        this.hover = false;
       },
     },
   };
