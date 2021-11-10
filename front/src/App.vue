@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Rencontre</router-link> |
-      <router-link to="/ranking">Classement</router-link>
-    </div>
+    <NavBar />
     <router-view />
   </div>
 </template>
@@ -11,8 +8,13 @@
 <script>
   import "./reset.css";
   import "./globals.scss";
+  import NavBar from "./components/NavBar.vue";
+
   export default {
     name: "App",
+    components: {
+      NavBar,
+    },
     mounted() {
       this.configScroll(this.$route);
     },
@@ -41,20 +43,5 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: var(--text-color);
-  }
-
-  #nav {
-    padding: 30px;
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  #nav a {
-    font-weight: bold;
-  }
-
-  #nav a.router-link-exact-active {
-    color: #42b983;
   }
 </style>
