@@ -27,9 +27,11 @@ exports.postEncounter = async (candidate1Id, candidate2Id, outcome) => {
   }
 }
 
-exports.getTwoRandomCandidates = async () => {
+exports.getTwoRandomCandidates = async (seenEncountersCookie) => {
   try {
-    const response = await axios.get(buildAPIRoute("/candidates/random-two"));
+    const response = await axios.get(buildAPIRoute("/candidates/random-two"), {
+      params: { seenEncountersCookie }
+    });
     if (response.data.length != 2) {
       console.error("The server doesn't send two candidates.");
       return;

@@ -40,6 +40,10 @@
   import Card from "@/components/Card.vue";
   import CandidateDescription from "@/components/CandidateDescription.vue";
   import api from "@/services/apiService.js";
+  import {
+    updateSeenEncountersCookie,
+    getSeenEncountersCookie,
+  } from "@/services/cookieService.js";
 
   export default {
     name: "Encounter",
@@ -70,12 +74,14 @@
       async postEncounter(outcome) {
         if (this.isDataLoaded) {
           api.postEncounter(this.candidate1._id, this.candidate2._id, outcome);
+          updateSeenEncountersCookie(this.candidate1._id, this.candidate2._id);
           this.reset();
         }
       },
       async reset() {
         this.isDataLoaded = false;
-        let candidates = await api.getTwoRandomCandidates();
+        let seenEncountersCookie = getSeenEncountersCookie();
+        let candidates = await api.getTwoRandomCandidates(seenEncountersCookie);
         this.candidate1 = candidates[0];
         this.candidate2 = candidates[1];
         this.isDataLoaded = true;
