@@ -56,7 +56,7 @@ exports.createOne = async (candidate1Id, candidate2Id) => {
       console.log("Two different candidates are required to create an encounter tracker.");
       return null;
     }
-    if (await checkIfExists(candidate1Id, candidate2Id)) {
+    if (await exports.checkIfExists(candidate1Id, candidate2Id)) {
       console.log("The tracker for the two given candidates already exists");
       return null;
     }
