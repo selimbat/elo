@@ -17,9 +17,9 @@ const checkOutcomeValidity = (outcome) => {
   return Object.values(Outcome).indexOf(outcome) >= 0;
 };
 
-const encounterSchema = mongoose.Schema({
-  candidate1Id: { type: mongoose.ObjectId, ref:"Candidate", required: true },
-  candidate2Id: { type: mongoose.ObjectId, ref:"Candidate", required: true },
+const schema = mongoose.Schema({
+  candidate1Id: { type: String, ref:"Candidate", required: true },
+  candidate2Id: { type: String, ref:"Candidate", required: true },
   outcome: { 
     type: Number,
     required: true,
@@ -32,10 +32,10 @@ const encounterSchema = mongoose.Schema({
   originIPAddress: { type: String, required: true}
 });
 
-encounterSchema.statics = {
+schema.statics = {
   getOutcomeEnum() {
     return Outcome;
   }
 };
 
-module.exports = mongoose.model('Encounter', encounterSchema);
+module.exports = mongoose.model('Encounter', schema);

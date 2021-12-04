@@ -16,7 +16,7 @@ class EloService {
     return new Promise(async (resolve, reject) => {
       try {
         await Promise.all(result.items.map(async item => {
-          let candidate = await Candidate.findOne({ _id: item.candidateId });
+          let candidate = await Candidate.findById(item.candidateId);
           if (!candidate) {
             reject(new Error(`Unable to find candidate of id ${item.candidateId}.`));
             return;
@@ -39,8 +39,8 @@ class EloService {
   static async ComputeEncounterResults(encounter){
     return new Promise(async (resolve, reject) => {
       try {
-        let candidate1 = await Candidate.findOne({ _id: encounter.candidate1Id });
-        let candidate2 = await Candidate.findOne({ _id: encounter.candidate2Id });
+        let candidate1 = await Candidate.findById(encounter.candidate1Id);
+        let candidate2 = await Candidate.findById(encounter.candidate2Id);
         let p = this.GetProbablity(candidate1, candidate2);
         let item1 = new EncounterResultItem(candidate1._id, this.GetScoreUpdate( encounter.outcome, p    ));
         let item2 = new EncounterResultItem(candidate2._id, this.GetScoreUpdate(-encounter.outcome, 1 - p));

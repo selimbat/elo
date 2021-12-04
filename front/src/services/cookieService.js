@@ -34,7 +34,6 @@ exports.setSeenEncountersCookie = (seenEncounterTracker) => {
 };
 
 exports.updateSeenEncountersCookie = (candidate1Id, candidate2Id) => {
-  // works, but cookie max size is exceeded because of the big ObjectId strings... TODO: Find a workaround
   let seenEncountersCookie = exports.getSeenEncountersCookie();
   let encounterKey = `${candidate1Id}:${candidate2Id}`;
   if (!seenEncountersCookie) {

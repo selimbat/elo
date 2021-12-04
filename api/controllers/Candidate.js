@@ -35,12 +35,12 @@ exports.getRandomTwo = async (req, res, next) => {
       // generate a matrix of all possible 1v1 combinations.
       let allowedEncounters = Object.fromEntries(
         candidates.map(c => [
-          c._id.toString(),
-          candidates.filter(o => !o._id.equals(c._id)).map(o => o._id.toString())
+          c._id,
+          candidates.filter(o => !o._id == c._id).map(o => o._id)
         ])
       );
-      let seenEncountersCookie = JSON.parse(req.query.seenEncountersCookie);
-      if (seenEncountersCookie){
+      if (req.query.seenEncountersCookie){
+        let seenEncountersCookie = JSON.parse(req.query.seenEncountersCookie);
         // remove from the matrix the combinations that have been shown to the user.
         Object.keys(seenEncountersCookie).forEach(key => {
           let [candidate1Id, candidate2Id] = key.split(":");
@@ -77,13 +77,14 @@ exports.getRandomTwo = async (req, res, next) => {
   }
 };
 
-exports.getOneById =  (req, res, next) => {
-  Candidate.findOne({ _id: req.params.id })
-    .then(candidate => {
-      resolveImgUrl(req.protocol, req.get("host"), candidate);
-      res.status(200).json(candidate);
-    })
-    .catch(error => res.status(404).json({ error }));
+exports.getOneById =  async (req, res, next) => {
+  try {
+    let candidate = await Candidate.findById(req.params.id);
+    resolveImgUrl(req.protocol, req.get("host"), candidate);
+    res.status(200).json(candidate);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
 };
 
 exports.createOne = (req, res, next) => {

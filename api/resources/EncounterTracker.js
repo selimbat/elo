@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Encounter = require("../resources/Encounter");
 
-const trackerSchema = mongoose.Schema({
+const schema = mongoose.Schema({
   _id: { type: String, required: true },
-  candidate1Id: { type: mongoose.ObjectId, ref: "Candidate", required: true },
-  candidate2Id: { type: mongoose.ObjectId, ref: "Candidate", required: true },
+  candidate1Id: { type: String, ref: "Candidate", required: true },
+  candidate2Id: { type: String, ref: "Candidate", required: true },
   nb1IsMoreLeftThan2: {
     type: Number,
     required: true,
@@ -19,15 +19,15 @@ const trackerSchema = mongoose.Schema({
   },
 });
 
-trackerSchema.methods = {
+schema.methods = {
   /**
    * @param {Encounter} encounter 
    */
   increment(encounter){
     let inverted;
-    if (encounter.candidate1Id.equals(this.candidate1Id) && encounter.candidate2Id.equals(this.candidate2Id)){
+    if (encounter.candidate1Id == this.candidate1Id && encounter.candidate2Id == this.candidate2Id) {
       inverted = false;
-    } else if (encounter.candidate1Id.equals(this.candidate2Id) && encounter.candidate2Id.equals(this.candidate1Id)) {
+    } else if (encounter.candidate1Id == this.candidate2Id && encounter.candidate2Id == this.candidate1Id) {
       inverted = true;
     } else {
       throw Error("Trying to increment a tracker with the wrong encounter.");
@@ -44,4 +44,4 @@ trackerSchema.methods = {
   }
 };
 
-module.exports = mongoose.model('EncounterTracker', trackerSchema);
+module.exports = mongoose.model('EncounterTracker', schema);
