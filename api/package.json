@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node node_modules/nodemon/bin/nodemon.js server.js",
     "prov": "node provisionning.js",
-    "test": "jest --watchAll --verbose"
+    "test": "jest --watchAll"
   },
   "author": "https://github.com/selimbat",
   "license": "ISC",
