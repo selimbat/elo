@@ -41,10 +41,7 @@ class EloService {
       try {
         let candidate1 = await Candidate.findById(encounter.candidate1Id);
         let candidate2 = await Candidate.findById(encounter.candidate2Id);
-        let p = this.GetProbablity(candidate1, candidate2);
-        let item1 = new EncounterResultItem(candidate1._id, this.GetScoreUpdate( encounter.outcome, p    ));
-        let item2 = new EncounterResultItem(candidate2._id, this.GetScoreUpdate(-encounter.outcome, 1 - p));
-        resolve(new EncounterResult(item1, item2));
+        resolve(this.ComputeResults(candidate1, candidate2, encounter.outcome));
       } catch (error) {
         reject(new Error("Failed to compute encounter result: " + error.message));
       }
@@ -52,7 +49,18 @@ class EloService {
   }
 
   /**
-   * Return the probablity that candidate 1 will be judged more the left than candidate 2.
+   * Return a EncounterResult object that can then submitted to the database to update candadites' scores.
+   * @return {EncounterResult}
+   */
+  static ComputeResults(candidate1, candidate2, outcome) {
+    let p = this.GetProbablity(candidate1, candidate2);
+    let item1 = new EncounterResultItem(candidate1._id, this.GetScoreUpdate( outcome, p    ));
+    let item2 = new EncounterResultItem(candidate2._id, this.GetScoreUpdate(-outcome, 1 - p));
+    return new EncounterResult(item1, item2);
+  } 
+
+  /**
+   * Return the probablity that candidate 1 will be judged more to the left than candidate 2.
    * @param {Candidate} candidate1 
    * @param {Candidate} candidate2 
    * @returns {Number} must be between 0 and 1.

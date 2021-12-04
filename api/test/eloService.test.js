@@ -1,17 +1,18 @@
 const Candidate = require('../resources/Candidate.js');
 const Encounter = require('../resources/Encounter.js');
 const EloService = require('../services/EloService.js');
-const { initCandidates, teardown } = require('../services/ProvisionningService.js');
+const { initCandidates, populateRandomEncounters, teardown } = require('../services/ProvisionningService.js');
 const db = require('../db.js');
 
 describe("Elo service", () => {
 
-  jest.setTimeout(10000);
+  jest.setTimeout(20000);
 
   beforeAll(async () => {
     try{
       if (await db.connect(true)) {
         await initCandidates(true, true);
+        await populateRandomEncounters(50);
       }
     } catch (err) {
       console.log(err);
