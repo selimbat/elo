@@ -22,7 +22,7 @@ formatPage = async (data) => {
     candidate.wikipediaUrl = "https://www.wikipedia.org" + nameNode.href;
     let ageStr = el.children[i].children[0].textContent;
     candidate.age = Number(ageStr.substring(ageStr.indexOf("(") + 1, ageStr.indexOf("ans)")));
-    let partyNode = el.children[i].children[0].children[2];
+    let partyNode = el.children[i].children[0].querySelector("p");
     candidate.party = {
       name: partyNode.firstChild?.textContent ?? partyNode.textContent,
       wikipediaUrl: partyNode.firstChild ? "https://www.wikipedia.org" + partyNode.firstChild.href : '',
