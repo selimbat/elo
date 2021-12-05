@@ -69,7 +69,7 @@ exports.getNeverSeenRandomTwo = async (seenEncountersCookieStr) => {
   let allowedEncounters = Object.fromEntries(
     candidates.map(c => [
       c._id,
-      candidates.filter(o => !o._id == c._id).map(o => o._id)
+      candidates.filter(o => o._id != c._id).map(o => o._id)
     ])
   );
   if (seenEncountersCookieStr){

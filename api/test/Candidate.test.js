@@ -16,7 +16,6 @@ module.exports = [
           cookie[`${c1._id}:${c2._id}`] = 1;
         }
       }
-      console.log(cookie);
       expect(Object.entries(cookie).length).toBe(n * (n - 1) / 2);
 
       // remove a random encounter from the cookie
