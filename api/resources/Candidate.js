@@ -41,7 +41,6 @@ schema.statics = {
         console.log("Initial candidates inserted to Collection.");
       } catch (err) {
         console.log("Failed to insert candidates: " + err.message);
-        
       }
     }
   }

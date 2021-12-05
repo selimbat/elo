@@ -21,11 +21,18 @@ formatPage = async (data, isTestContext = false) => {
     candidate.wikipediaUrl = "https://www.wikipedia.org" + nameNode.href;
     let ageStr = el.children[i].children[0].textContent;
     candidate.age = Number(ageStr.substring(ageStr.indexOf("(") + 1, ageStr.indexOf("ans)")));
-    let partyNode = el.children[i].children[0].querySelector("p");
-    candidate.party = {
-      name: partyNode.firstChild?.textContent ?? partyNode.textContent,
-      wikipediaUrl: partyNode.firstChild ? "https://www.wikipedia.org" + partyNode.firstChild.href : '',
-    };
+    let partyNode = el.children[i].children[0].querySelector("a");
+    if (partyNode != null) {
+      candidate.party = {
+        name: partyNode.textContent,
+        wikipediaUrl: "https://www.wikipedia.org" + partyNode.firstChild.href,
+      };
+    } else {
+      candidate.party = {
+        name: ageStr.substr(ageStr.indexOf(")" + 2)),
+        wikipediaUrl: '',
+      }
+    }
     const tempImgUrl = "https://commons.wikimedia.org" + el.children[i].children[1].children[0].href.replace("Fichier",'File');
     candidate.imgUrl = await getPage(tempImgUrl, getImgUrlFromFilePage);
 

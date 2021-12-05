@@ -15,7 +15,6 @@ describe("All tests", () => {
   afterAll(async () => await teardown());
 
   tests.forEach((testItem) => {
-    console.log(testItem);
     test(testItem.key, testItem.fn);
   });
 });
