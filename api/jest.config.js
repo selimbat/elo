@@ -1,5 +1,6 @@
 module.exports = {
   testEnvironment: 'node',
-  globalSetup: './test/Init.js',
-  globalTeardown: './test/Teardown.js'
+  testRegex: 'test/All.js',
+  //globalSetup: './test/Init.js',
+  //globalTeardown: './test/Teardown.js'
 }
