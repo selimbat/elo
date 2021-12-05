@@ -14,18 +14,19 @@ formatPage = async (data, isTestContext = false) => {
   let el = doc.window.document.querySelector("#mw-content-text > .mw-parser-output > table.wikitable > tbody");
   for(let i = 1; i < el.children.length; i++){
     let candidate = {};
-    let nameNode = el.children[i].children[0].children[0].children[0];
+    let links = el.children[i].children[0].querySelectorAll("a");
+    let nameNode = links[0];
     ([ firstname, ...lastname ] = nameNode.textContent.split(" "));
     candidate.firstname = firstname;
     candidate.lastname = lastname.join(" ");
     candidate.wikipediaUrl = "https://www.wikipedia.org" + nameNode.href;
     let ageStr = el.children[i].children[0].textContent;
     candidate.age = Number(ageStr.substring(ageStr.indexOf("(") + 1, ageStr.indexOf("ans)")));
-    let partyNode = el.children[i].children[0].querySelector("a");
-    if (partyNode != null) {
+    if (links.length > 1) {
+      let partyNode = links[1];
       candidate.party = {
         name: partyNode.textContent,
-        wikipediaUrl: "https://www.wikipedia.org" + partyNode.firstChild.href,
+        wikipediaUrl: "https://www.wikipedia.org" + partyNode.href,
       };
     } else {
       candidate.party = {
