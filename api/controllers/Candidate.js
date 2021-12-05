@@ -1,4 +1,3 @@
-const { all } = require("../app");
 const Candidate = require("../resources/Candidate");
 const EncounterTracker = require("../resources/EncounterTracker");
 
