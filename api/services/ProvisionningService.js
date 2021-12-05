@@ -4,14 +4,14 @@ const EncounterTracker = require("../resources/EncounterTracker");
 const scrapper = require('./CandidatesScrapperService');
 const EloService = require('./EloService.js');
 
-exports.initCandidates = async (overwrite, submit) => {
+exports.initCandidates = async (overwrite, submit, isTestContext = false) => {
   try {
     if (overwrite){
       exports.teardown();
     }
     const doc = await Candidate.findOne({});
     if(overwrite || !doc){
-      await Candidate.initCandidates(scrapper, submit);
+      await Candidate.initCandidates(scrapper, submit, isTestContext);
       return true;
     } else {
       console.log("Found at least a document in the collection.")

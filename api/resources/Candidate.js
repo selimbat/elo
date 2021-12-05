@@ -30,8 +30,8 @@ const schema = mongoose.Schema({
 });
 
 schema.statics = {
-  initCandidates: async (source, submit) => {
-    let candidates = await source.getCandidates();
+  initCandidates: async (source, submit, isTestContext = false) => {
+    let candidates = await source.getCandidates(isTestContext);
     for(let i = 0; i < candidates.length; i++) {
       candidates[i].score = 0;
     }

@@ -3,12 +3,12 @@ const { JSDOM } = require('jsdom');
 var fs = require('fs');
 const SOURCE_URL = "https://fr.wikipedia.org/wiki/Candidats_%C3%A0_l'%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2022";
 
-exports.getCandidates = async () => {
+exports.getCandidates = async (isTestContext = false) => {
   console.log("Fetching candidates from the internet.");
-  return await getPage(SOURCE_URL, formatPage);
+  return await getPage(SOURCE_URL, (data) => formatPage(data, isTestContext));
 };
 
-formatPage = async (data) => {
+formatPage = async (data, isTestContext = false) => {
   let candidates = [];
   let doc = new JSDOM(data);
   let el = doc.window.document.querySelector("#mw-content-text > .mw-parser-output > table.wikitable > tbody");
@@ -45,7 +45,9 @@ formatPage = async (data) => {
     
     candidates.push(candidate);
   }
-  await downloadImages(candidates);
+  if (!isTestContext){
+    await downloadImages(candidates);
+  }
   return candidates;
 };
 

@@ -11,7 +11,7 @@ describe("Elo service", () => {
   beforeAll(async () => {
     try{
       if (await db.connect(true)) {
-        await initCandidates(true, true);
+        await initCandidates(true, true, true);
         await populateRandomEncounters(50);
       }
     } catch (err) {
