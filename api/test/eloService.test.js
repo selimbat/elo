@@ -1,36 +1,21 @@
 const Candidate = require('../resources/Candidate.js');
 const Encounter = require('../resources/Encounter.js');
 const EloService = require('../services/EloService.js');
-const { initCandidates, populateRandomEncounters, teardown } = require('../services/ProvisionningService.js');
-const db = require('../db.js');
+const mongoose = require('mongoose');
 
 describe("Elo service", () => {
 
   jest.setTimeout(20000);
 
-  beforeAll(async () => {
-    try{
-      if (await db.connect(true)) {
-        await initCandidates(true, true, true);
-        await populateRandomEncounters(50);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  afterAll(async () => {
-    await teardown();
-    await db.disconnect();
-  });
-  
-  test("The sum of all scores stays 0.", async () => {
+  test.only("The sum of all scores stays 0.", async () => {
+    console.log(`connection established: ${mongoose.connection != null}`);
     let candidates = await Candidate.find();
+    console.log("candidates: " + candidates != null);
     expect(candidates).toBeDefined();
     expect(candidates.length).toBeGreaterThan(0);
-    expect(candidates.map(c => c.score).reduce((a, b) => a + b)).toBe(0);    
+    expect(candidates.map(c => c.score).reduce((a, b) => a + b)).toBe(0);
   });
-  
+  /*
   test("Adding an encounter keeps the total score at zero", async () => {
       let result = await EloService.ComputeEncounterResults(new Encounter({
       candidate1Id: "lassalle",
@@ -57,5 +42,6 @@ describe("Elo service", () => {
     let p = EloService.GetProbablity(candidate1, candidate2);
     let pSym = EloService.GetProbablity(candidate2, candidate1);
     expect(Math.abs(1 - (p + pSym))).toBeLessThanOrEqual(1e-14); // dirty workaround for floating point errors
-  })
+  });
+  */
 })

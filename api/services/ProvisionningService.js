@@ -29,6 +29,7 @@ exports.populateRandomEncounters = async (nbEncounters) => {
     if (candidates.length < 2) {
       return;
     }
+    console.log("Creating encounters.");
     for (let i = 0; i < nbEncounters; i++){
       let candidate1 = candidates[Math.floor(Math.random() * candidates.length)];
       let candidate2;
@@ -46,8 +47,9 @@ exports.populateRandomEncounters = async (nbEncounters) => {
       let encounterResult = EloService.ComputeResults(candidate1, candidate2, encounter.outcome);
       await EloService.SubmitEncounterResult(encounterResult);
     }
+    console.log(`${nbEncounters} encounters created.`);
   } catch (error) {
-    console.log(error);
+    console.log("Failed to create encounters: " + error);
   }
 }
 
