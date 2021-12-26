@@ -13,6 +13,22 @@ class GraphService {
     );
   }
 
+  buildFromCookie(cookieStr) {
+    if (!cookieStr){
+      return;
+    }
+    let cookie = JSON.parse(cookieStr);
+    Object.keys(cookie).forEach(key => {
+      let [c1Id, c2Id] = key.split(":");
+      if (cookie[key] < 0) {
+        let tmp = c1Id;
+        c1Id = c2Id;
+        c2Id = tmp;
+      }
+      this.addTransition(c1Id, c2Id);
+    });
+  }
+
   /**
    * @param {String} leftCId Id of the left-leaning candidate  
    * @param {String} rightCId Id of the right-leaning candidate

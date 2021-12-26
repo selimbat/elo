@@ -74,7 +74,11 @@
       async postEncounter(outcome) {
         if (this.isDataLoaded) {
           api.postEncounter(this.candidate1._id, this.candidate2._id, outcome);
-          updateSeenEncountersCookie(this.candidate1._id, this.candidate2._id);
+          updateSeenEncountersCookie(
+            this.candidate1._id,
+            this.candidate2._id,
+            outcome
+          );
           this.reset();
         }
       },

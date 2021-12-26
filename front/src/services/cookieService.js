@@ -33,23 +33,23 @@ exports.setSeenEncountersCookie = (seenEncounterTracker) => {
   set("SEEN_ENCOUNTERS", seenEncounterTracker, 1);
 };
 
-exports.updateSeenEncountersCookie = (candidate1Id, candidate2Id) => {
+exports.updateSeenEncountersCookie = (candidate1Id, candidate2Id, outcome) => {
   let seenEncountersCookie = exports.getSeenEncountersCookie();
   let encounterKey = `${candidate1Id}:${candidate2Id}`;
   if (!seenEncountersCookie) {
     // first time setting cookie
     seenEncountersCookie = {};
-    seenEncountersCookie[encounterKey] = 1;
+    seenEncountersCookie[encounterKey] = outcome;
   } else {
     if (seenEncountersCookie[encounterKey]) {
-      seenEncountersCookie[encounterKey]++;
+      seenEncountersCookie[encounterKey] = outcome;
     } else {
       encounterKey = `${candidate2Id}:${candidate1Id}`;
       if (seenEncountersCookie[encounterKey]) {
-        seenEncountersCookie[encounterKey]++;
+        seenEncountersCookie[encounterKey] = -outcome;
       } else {
         // never seen this encounter
-        seenEncountersCookie[encounterKey] = 1;
+        seenEncountersCookie[encounterKey] = -outcome;
       }
     }
   }
