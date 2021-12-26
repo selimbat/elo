@@ -4,6 +4,7 @@ const teardown = require('./Teardown.js');
 let tests = [
   ...require('./Candidate.test.js'),
   ...require('./EloService.test.js'),
+  ...require('./GraphService.test.js'),
 ];
 
 describe("All tests", () => {

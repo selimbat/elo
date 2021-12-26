@@ -19,7 +19,7 @@ class GraphService {
    */
   addTransition(leftCId, rightCId) {
     // we could check if this creates a cycle, wich is in our case non desirable.
-    if (this.transitions?.[leftCId] && rightCId) {
+    if (leftCId != rightCId && this.transitions?.[leftCId] && rightCId) {
       this.transitions[leftCId].push(rightCId);
     }
   }
@@ -86,6 +86,7 @@ class GraphService {
         do {
           n2 = nodes[Math.floor(Math.random() * nodes.length)];
         } while (n2 == n1);
+        return [n1, n2];
       }; 
       if (possibleStartNodes?.length) {
         return { missingTransition: getRandomPair(possibleStartNodes) };
