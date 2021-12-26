@@ -2,6 +2,7 @@
 
 class GraphService {
   constructor(candidates) {
+    this.candidates = candidates;
     this.N = candidates.length;
     // Initialize the matrix of all transitions.
     // each entry is made of a key wich is a candidate Id and a list of all more right-leaning candidates than the key.
@@ -36,6 +37,31 @@ class GraphService {
    * @param {String} cId Id of the candidate for wich to fetch all the connected more left-leaning candidates
    */
   getAllPreviousNodes(cId) {
+    if (this.transitions) {
+      return Object.keys(this.transitions).filter(otherCId =>
+        otherCId != cId && this.transitions[otherCId].indexOf(cId) >= 0
+      );
+    }
+  }
+
+  /**
+   * Get all the candidates directly connected to a candidate
+   * @param {String} cId Id of the candidate for wich to fetch all the connected more left-leaning candidates
+   */
+  getAllNeighborNodes(cId) {
+    return [...this.getAllPreviousNodes(cId), ...this.getAllNextNodes(cId)];
+  }
+
+  getRandomUnconnectedNodes() {
+    let c1Id, c2Id, c1Neighbors;
+    do {
+      // find a first candidate that is not already connected to all other candidates.
+      c1Id = this.candidates[Math.floor(Math.random() * this.N)];
+      c1Neighbors = new Set(this.getAllNeighborNodes(c1Id));
+    } while (c1Neighbors.size >= this.N);
+    let possibleC2s = this.candidates.filter(c => !c1Neighbors.has(c));
+    c2Id = this.candidates[Math.floor(Math.random() * possibleC2s.length)];
+    return [c1Id, c2Id];
   }
 
   /**
@@ -54,11 +80,18 @@ class GraphService {
       return { path };
     }
     if (multipleTerminalNodes) {
+      let getRandomPair = (nodes) => {
+        let n1 = nodes[Math.floor(Math.random() * nodes.length)];
+        let n2;
+        do {
+          n2 = nodes[Math.floor(Math.random() * nodes.length)];
+        } while (n2 == n1);
+      }; 
       if (possibleStartNodes?.length) {
-        return { missingTransition: possibleStartNodes.slice(0, 2) };
+        return { missingTransition: getRandomPair(possibleStartNodes) };
       }
       if (possibleEndNodes?.length) {
-        return { missingTransition: possibleEndNodes.slice(0, 2) };
+        return { missingTransition: getRandomPair(possibleEndNodes) };
       }
     }
 
@@ -68,11 +101,12 @@ class GraphService {
     let i = 1;
     while (diff.length < 2 && i < orderedPaths.length) {
       diff = [];
-      let twoLongestPaths = [...orderedPaths[0], ...orderedPaths[i]].sort();
-      for (let j = 0; j < twoLongestPaths.length; j++) {
-        if ((j == 0 || twoLongestPaths[j - 1] != twoLongestPaths[j])
-        && (j == twoLongestPaths.length - 1 || twoLongestPaths[j] != twoLongestPaths[j + 1])) {
-          diff.push(twoLongestPaths[j]);
+      let pathA = new Set(orderedPaths[0]);
+      let pathB = new Set(orderedPaths[i]);
+      for (let c of Set([...pathA, ...pathB])) {
+        if (!pathA.has(c) ^ !pathB.has(c)) {
+          // c appear only in pathA or pathB
+          diff.push(c);
         }
       }
       i++;
