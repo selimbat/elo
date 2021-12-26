@@ -80,6 +80,19 @@ class GraphService {
     return [c1Id, c2Id];
   }
 
+  getRandomPair() {
+    return this.getRandomPairFromSubSet(this.candidates);
+  }
+
+  getRandomPairFromSubSet(nodes) {
+    let n1 = nodes[Math.floor(Math.random() * nodes.length)];
+    let n2;
+    do {
+      n2 = nodes[Math.floor(Math.random() * nodes.length)];
+    } while (n2 == n1);
+    return [n1, n2];
+  };
+
   /**
    * Search the graph (depth first) looking for a traversal path. If none is found, returns a candidate transition that
    * would contribute to having a traversal path.
@@ -93,22 +106,17 @@ class GraphService {
     };
 
     if (path) {
-      return { path };
+      return { 
+        path,
+        missingTransition: this.getRandomPair(),
+      };
     }
     if (multipleTerminalNodes) {
-      let getRandomPair = (nodes) => {
-        let n1 = nodes[Math.floor(Math.random() * nodes.length)];
-        let n2;
-        do {
-          n2 = nodes[Math.floor(Math.random() * nodes.length)];
-        } while (n2 == n1);
-        return [n1, n2];
-      }; 
       if (possibleStartNodes?.length) {
-        return { missingTransition: getRandomPair(possibleStartNodes) };
+        return { missingTransition: this.getRandomPairFromSubSet(possibleStartNodes) };
       }
       if (possibleEndNodes?.length) {
-        return { missingTransition: getRandomPair(possibleEndNodes) };
+        return { missingTransition: this.getRandomPairFromSubSet(possibleEndNodes) };
       }
     }
 
