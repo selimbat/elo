@@ -64,13 +64,18 @@ class GraphService {
 
     // find a transition that would get us closer to finding a traversal
     let orderedPaths = allPaths.sort((a, b) => a.length < b.length ? 1 : -1);
-    let twoLongestPaths = [...orderedPaths[0], ...orderedPaths[1]].sort();
     let diff = [];
-    for (let i = 0; i < twoLongestPaths.length; i++) {
-      if ((i == 0 || twoLongestPaths[i - 1] != twoLongestPaths[i])
-       && (i == twoLongestPaths.length - 1 || twoLongestPaths[i] != twoLongestPaths[i + 1])) {
-        diff.push(twoLongestPaths[i]);
+    let i = 1;
+    while (diff.length < 2 && i < orderedPaths.length) {
+      diff = [];
+      let twoLongestPaths = [...orderedPaths[0], ...orderedPaths[i]].sort();
+      for (let j = 0; j < twoLongestPaths.length; j++) {
+        if ((j == 0 || twoLongestPaths[j - 1] != twoLongestPaths[j])
+        && (j == twoLongestPaths.length - 1 || twoLongestPaths[j] != twoLongestPaths[j + 1])) {
+          diff.push(twoLongestPaths[j]);
+        }
       }
+      i++;
     }
     return { missingTransition: diff.slice(0, 2) };
   }
