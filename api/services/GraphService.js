@@ -85,6 +85,9 @@ class GraphService {
   }
 
   getRandomPairFromSubSet(nodes) {
+    if (nodes.length < 2) {
+      return [undefined, undefined];
+    }
     let n1 = nodes[Math.floor(Math.random() * nodes.length)];
     let n2;
     do {
@@ -104,7 +107,6 @@ class GraphService {
     let { path, allPaths, multipleTerminalNodes, possibleEndNodes, possibleStartNodes } = {
       ...this.getTraversalPath()
     };
-
     if (path) {
       return { 
         path,
@@ -112,31 +114,44 @@ class GraphService {
       };
     }
     if (multipleTerminalNodes) {
-      if (possibleStartNodes?.length) {
+      if (possibleStartNodes?.length >= 2) {
         return { missingTransition: this.getRandomPairFromSubSet(possibleStartNodes) };
       }
-      if (possibleEndNodes?.length) {
+      if (possibleEndNodes?.length >= 2) {
         return { missingTransition: this.getRandomPairFromSubSet(possibleEndNodes) };
       }
     }
 
     // find a transition that would get us closer to finding a traversal
     let orderedPaths = allPaths.sort((a, b) => a.length < b.length ? 1 : -1);
-    let diff = [];
+    let diff = {
+      onlyInA: [],
+      onlyInB: []
+    };
     let i = 1;
-    while (diff.length < 2 && i < orderedPaths.length) {
-      diff = [];
+    while ((!diff.onlyInA.length || !diff.onlyInB.length) && i < orderedPaths.length) {
+      diff = {
+        onlyInA: [],
+        onlyInB: []
+      };
       let pathA = new Set(orderedPaths[0]);
       let pathB = new Set(orderedPaths[i]);
-      for (let c of Set([...pathA, ...pathB])) {
-        if (!pathA.has(c) ^ !pathB.has(c)) {
-          // c appear only in pathA or pathB
-          diff.push(c);
+      for (let c of pathA) {
+        if (!pathB.has(c)) {
+          diff.onlyInA.push(c);
+        }
+      }
+      for (let c of pathB) {
+        if (!pathA.has(c)) {
+          diff.onlyInB.push(c);
         }
       }
       i++;
     }
-    return { missingTransition: diff.slice(0, 2) };
+    return { missingTransition: [
+      diff.onlyInA[Math.floor(Math.random() * diff.onlyInA.length)],
+      diff.onlyInB[Math.floor(Math.random() * diff.onlyInB.length)]
+    ]};
   }
 
   /**
