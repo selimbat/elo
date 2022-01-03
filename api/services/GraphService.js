@@ -60,28 +60,8 @@ class GraphService {
     }
   }
 
-  /**
-   * Get all the candidates directly connected to a candidate
-   * @param {String} cId Id of the candidate for wich to fetch all the connected more left-leaning candidates
-   */
-  getAllNeighborNodes(cId) {
-    return [...this.getAllPreviousNodes(cId), ...this.getAllNextNodes(cId)];
-  }
-
-  getRandomUnconnectedNodes() {
-    let c1Id, c2Id, c1Neighbors;
-    do {
-      // find a first candidate that is not already connected to all other candidates.
-      c1Id = this.candidates[Math.floor(Math.random() * this.N)];
-      c1Neighbors = new Set(this.getAllNeighborNodes(c1Id));
-    } while (c1Neighbors.size >= this.N);
-    let possibleC2s = this.candidates.filter(c => !c1Neighbors.has(c));
-    c2Id = this.candidates[Math.floor(Math.random() * possibleC2s.length)];
-    return [c1Id, c2Id];
-  }
-
   getRandomPair() {
-    return this.getRandomPairFromSubSet(this.candidates);
+    return this.getRandomPairFromSubSet(this.candidates.map(c => c._id));
   }
 
   getRandomPairFromSubSet(nodes) {
@@ -269,7 +249,6 @@ class GraphService {
       allLoops,
     };
   }
-
 }
 
 module.exports = GraphService;
