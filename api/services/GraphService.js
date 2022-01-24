@@ -94,12 +94,19 @@ class GraphService {
       };
     }
     if (multipleTerminalNodes) {
-      if (possibleStartNodes?.length >= 2) {
-        return { missingTransition: this.getRandomPairFromSubSet(possibleStartNodes) };
+      let subset = null;
+      if (possibleStartNodes?.length >= 2 && possibleEndNodes?.length >= 2) {
+        if (Math.random() > 0.5) {
+          subset = possibleStartNodes;
+        } else {
+          subset = possibleEndNodes;
+        }
+      } else if (possibleStartNodes?.length >= 2) {
+        subset = possibleStartNodes;
+      } else if (possibleEndNodes?.length >= 2) {
+        subset = possibleEndNodes;
       }
-      if (possibleEndNodes?.length >= 2) {
-        return { missingTransition: this.getRandomPairFromSubSet(possibleEndNodes) };
-      }
+      return { missingTransition: this.getRandomPairFromSubSet(subset) };
     }
 
     // find a transition that would get us closer to finding a traversal
