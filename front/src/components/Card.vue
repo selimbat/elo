@@ -10,6 +10,7 @@
     :class="{ loading: loading }"
   >
     <div
+      v-if="withImage"
       class="image"
       :style="{
         backgroundImage:
@@ -22,13 +23,13 @@
         </div>
       </transition>
     </div>
-    <div class="infos" v-if="loading">
+    <div :class="withImage ? 'infos' : 'infos withoutImage'" v-if="loading">
       <span class="skeleton-text"></span>
       <span class="skeleton-text"></span>
     </div>
-    <div class="infos" v-else>
+    <div :class="withImage ? 'infos' : 'infos withoutImage'" v-else>
       <h2>{{ `${candidate.firstname} ${candidate.lastname}` }}</h2>
-      <div class="content">
+      <div class="content" v-if="withImage">
         <h3>
           {{ candidate.party.name ? candidate.party.name : "Indépendant.e" }}
         </h3>
@@ -47,6 +48,10 @@
       loading: {
         type: Boolean,
         default: false,
+      },
+      withImage: {
+        type: Boolean,
+        default: true,
       },
     },
     data() {
@@ -107,10 +112,10 @@
     h2 {
       font-weight: var(--bold-font-weight);
       padding: 0.25em 0 0.5em 0;
-      font-size: 25px;
+      font-size: 1.2rem;
     }
     h3 {
-      font-size: 18px;
+      font-size: 1rem;
     }
     .skeleton-text {
       display: block;
@@ -123,6 +128,10 @@
       &:first-of-type {
         width: 70%;
       }
+    }
+    &.withoutImage {
+      inset: 0;
+      border-radius: var(--border-radius);
     }
   }
   .center-details {

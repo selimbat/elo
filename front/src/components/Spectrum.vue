@@ -12,7 +12,7 @@
     height: 1em;
     position: relative;
     width: calc(calc(100% - var(--card-width)));
-    margin: 2.5em var(--arrow-size);
+    margin: 1em var(--arrow-size) 1em var(--arrow-size);
     border-left: calc(calc(var(--card-width) / 2) - var(--arrow-size)) solid
       var(--left-color);
     border-right: calc(calc(var(--card-width) / 2) - var(--arrow-size)) solid

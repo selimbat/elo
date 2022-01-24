@@ -96,8 +96,8 @@
 
 <style lang="scss" scoped>
   section {
-    height: var(--section-height);
-    padding-top: calc((100vh - var(--section-height)) / 2);
+    height: var(--encounter-section-height);
+    padding-top: calc((100vh - var(--encounter-section-height)) / 2);
     width: 100%;
     display: flex;
     justify-content: center;
