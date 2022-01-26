@@ -116,7 +116,7 @@ class GraphService {
       }
       return { missingTransition: this.getRandomPairFromSubSet(subset) };
     }
-
+    
     // find a transition that would get us closer to finding a traversal
     let orderedPaths = allPaths.sort((a, b) => a.length < b.length ? 1 : -1);
     let diff = {
@@ -210,9 +210,17 @@ class GraphService {
     let currentNode = startNode;
     let currentPath = [currentNode];
 
+    const registerPathAndBacktrackToParent = () => {
+      allPaths.push([...currentPath]);
+      currentPath.pop();
+      if (currentPath.length > 0) {
+        currentNode = currentPath[currentPath.length - 1]; // parent node;
+      }
+    }
+
     while (currentPath.length > 0) {
       let children = this.getAllNextNodes(currentNode);
-      if (currentNode == endNode || !children?.length) {
+      if (currentNode == endNode) {
         if (stopAtFirstPath || currentPath.length == this.N) {
           // found a traversal path
           return {
@@ -221,11 +229,7 @@ class GraphService {
             allLoops: allLoops,
           }
         }
-        allPaths.push([...currentPath]);
-        currentPath.pop();
-        if (currentPath.length > 0) {
-          currentNode = currentPath[currentPath.length - 1]; // parent node;
-        }
+        registerPathAndBacktrackToParent();
         continue;
       }
       let foundPathNotVisited = false;
@@ -233,7 +237,7 @@ class GraphService {
         if (currentPath.indexOf(child) >= 0) {
           // loop detected
           let detectedLoop = [...currentPath.slice(currentPath.indexOf(child))];
-          if (!allLoops.some(loop => loop.join(';') == detectedLoop.join(";"))) {
+          if (!allLoops.some(loop => loop.join(';') == detectedLoop.join(";"))) { // can do better. using Set for instance. 
             allLoops.push(detectedLoop);
           }
           continue;
@@ -257,10 +261,7 @@ class GraphService {
       }
       if (!foundPathNotVisited){
         // all children have been visited
-        currentPath.pop();
-        if (currentPath.length > 0) {
-          currentNode = currentPath[currentPath.length - 1]; // parent node;
-        }
+        registerPathAndBacktrackToParent();
       }
     }
     return {
