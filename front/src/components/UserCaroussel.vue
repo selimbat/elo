@@ -1,5 +1,5 @@
 <template>
-  <div class="caroussel">
+  <div class="caroussel" v-if="userOrdered">
     <Card
       v-for="candidate in candidates"
       :key="candidate.name"
@@ -7,6 +7,9 @@
       :withImage="false"
       :isCorrectOrder="candidate.isCorrectOrder"
     ></Card>
+  </div>
+  <div class="caroussel not-ranked" v-else>
+    <span>Compare plus de candidats pour voir ton classement.</span>
   </div>
 </template>
 
@@ -22,6 +25,11 @@
       candidates: {
         type: Array,
         default: () => [],
+      },
+    },
+    computed: {
+      userOrdered() {
+        return this.candidates.length > 0;
       },
     },
   };
@@ -41,6 +49,17 @@
       &:last-of-type {
         margin-right: 0;
       }
+    }
+  }
+  .not-ranked {
+    border-radius: var(--border-radius);
+    box-shadow: 0.5rem 0.5rem 2rem #888c9e;
+    padding: 0 0 0 1em;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    span {
+      position: fixed;
     }
   }
 </style>
