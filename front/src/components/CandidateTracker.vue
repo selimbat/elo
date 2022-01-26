@@ -90,10 +90,10 @@
 <style lang="scss" scoped>
   .tracker {
     box-sizing: border-box;
-    font-size: 18px;
+    font-size: 1.1rem;
     text-align: left;
     line-height: 1.3;
-    padding: 1.5rem;
+    padding: 1.5rem 1em;
     border-radius: var(--border-radius);
     background-color: rgba(190, 207, 221, 0.92);
     box-shadow: 0.5em 0.5em 1em #1119;
@@ -101,7 +101,7 @@
   .legend > ul {
     display: flex;
     justify-content: space-between;
-    font-size: 0.85em;
+    font-size: 0.85rem;
     & > li {
       --line-height: 1.5em;
       line-height: var(--line-height);
@@ -124,7 +124,19 @@
 
   .opponent-name {
     text-align: right;
-    padding-right: 0.5em;
+    width: 50%;
+    position: relative;
+    &::before {
+      content: "&nbsp;";
+      visibility: hidden;
+    }
+    > span {
+      position: absolute;
+      inset: 0 0.5em 0 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .proportion-display {

@@ -123,6 +123,9 @@
       font-weight: var(--bold-font-weight);
       padding: 0.25em 0 0.5em 0;
       font-size: 1.2rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     h3 {
       font-size: 1rem;
