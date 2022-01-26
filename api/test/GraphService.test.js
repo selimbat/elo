@@ -15,7 +15,7 @@ module.exports = [
       ];
       let graph = new GraphService(candidates);
       for (let i = 0; i < 10; i++) {
-        let [c1Id, c2Id] = graph.getRandomUnconnectedNodes();
+        let [c1Id, c2Id] = graph.getRandomPair();
         if (Math.random() < 0.5) {
           let tmp = c1Id;
           c1Id = c2Id;
@@ -44,7 +44,7 @@ module.exports = [
       ];
       let graph = new GraphService(candidates);
       for (let i = 0; i < 10; i++) {
-        let [c1Id, c2Id] = graph.getRandomUnconnectedNodes();
+        let [c1Id, c2Id] = graph.getRandomPair();
         if (Math.random() < 0.5) {
           let tmp = c1Id;
           c1Id = c2Id;
@@ -54,7 +54,7 @@ module.exports = [
       }
       let result = graph.getTraversalPathOrMissingTransition();
       if (result.missingTransition) {
-        let path = graph.getPathBetweenTwoNodes(result.missingTransition[0], result.missingTransition[1]).path;
+        let path = graph.getPathBetweenTwoNodes(result.missingTransition[0], result.missingTransition[1], true).path;
         expect(path).toBeFalsy();
       }
     }

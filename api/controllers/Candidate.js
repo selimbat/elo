@@ -23,7 +23,13 @@ exports.getAll = async (req, res, next) => {
         nb1IsMoreRightThan2
       };
     });
-    res.status(200).json({ candidates, trackersMap });
+    let path = null;
+    if (req.query.seenEncountersCookie) {
+      let graph = new GraphService(candidates);
+      graph.buildFromCookie(req.query.seenEncountersCookie);
+      path = graph.getTraversalPath()?.path;
+    }
+    res.status(200).json({ candidates, trackersMap, path });
   } catch (error) {
     res.status(400).json({ error });
   }
@@ -68,7 +74,7 @@ exports.getNeverSeenRandomTwo = async (seenEncountersCookieStr) => {
   let candidates = await Candidate.find();
   let graph = new GraphService(candidates);
   graph.buildFromCookie(seenEncountersCookieStr);
-  let { missingTransition } = { ...graph.getTraversalPathOrMissingTransition() };
+  let { missingTransition } = graph.getTraversalPathOrMissingTransition();
   let [c1Id, c2Id] = missingTransition;
   return [await Candidate.findById(c1Id), await Candidate.findById(c2Id)];
 };

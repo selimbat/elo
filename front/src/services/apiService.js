@@ -4,9 +4,11 @@ const buildAPIRoute = (path) => {
   return `${process.env.VUE_APP_API_HOST}${path}`;
 }
 
-exports.getAllCandidates = async () => {
+exports.getAllCandidates = async (seenEncountersCookie) => {
   try {
-    const response = await axios.get(buildAPIRoute("/candidates"));
+    const response = await axios.get(buildAPIRoute("/candidates"), {
+      params: { seenEncountersCookie}
+    });
     return response;
   } catch (error) {
     console.error(error);

@@ -12,7 +12,7 @@
     <div class="wrapper">
       <h2>Ton classement :</h2>
     </div>
-    <UserCaroussel class="user-caroussel" :candidates="candidates" />
+    <UserCaroussel class="user-caroussel" :candidates="candidatesByUserOrder" />
   </section>
 </template>
 
@@ -51,6 +51,7 @@
   import UserCaroussel from "@/components/UserCaroussel.vue";
   import Spectrum from "@/components/Spectrum.vue";
   import api from "@/services/apiService.js";
+  import { getSeenEncountersCookie } from "@/services/cookieService.js";
 
   export default {
     name: "Ranking",
@@ -63,6 +64,7 @@
       return {
         candidates: [],
         trackersMap: {},
+        candidatesByUserOrder: [],
         leftRatio: undefined,
       };
     },
@@ -71,12 +73,19 @@
     },
     methods: {
       async getCandidates() {
-        const response = await api.getAllCandidates();
+        const seenEncountersCookie = getSeenEncountersCookie();
+        const response = await api.getAllCandidates(seenEncountersCookie);
         this.candidates = response.data.candidates.sort(
           (c1, c2) => c1.score < c2.score
         );
         this.trackersMap = response.data.trackersMap;
         this.leftRatio = this.computeLeftistsRatio();
+        console.log(response.data.path);
+        if (response.data.path) {
+          this.candidatesByUserOrder = response.data.path.map((cId) =>
+            this.candidates.find((c) => c._id == cId)
+          );
+        }
       },
       computeLeftistsRatio() {
         // this.candidates needs to be not empty and sorted by descending score
