@@ -37,7 +37,7 @@ class GraphService {
     if (leftCId == rightCId || !this.transitions?.[leftCId] || !rightCId) {
       return;
     }
-    let { possibleStartNodes, possibleEndNodes } = getPossibleTerminalNodes();
+    let { possibleStartNodes, possibleEndNodes } = this.getPossibleTerminalNodes();
     // avoid creating a loop and emptying the graph of a unique start and end node.
     if (possibleEndNodes.length == 1 && possibleEndNodes[0] == leftCId) {
       return;
@@ -160,7 +160,7 @@ class GraphService {
    * a 'possibleEndNodes' property wich is a list of all possible end nodes. 
    */
   getTraversalPath() {
-    let { possibleStartNodes, possibleEndNodes } = getPossibleTerminalNodes();
+    let { possibleStartNodes, possibleEndNodes } = this.getPossibleTerminalNodes();
     if (possibleStartNodes.length != 1 || possibleEndNodes.length != 1) {
       return {
         path: null,
