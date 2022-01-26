@@ -80,11 +80,16 @@
         );
         this.trackersMap = response.data.trackersMap;
         this.leftRatio = this.computeLeftistsRatio();
-        console.log(response.data.path);
         if (response.data.path) {
-          this.candidatesByUserOrder = response.data.path.map((cId) =>
-            this.candidates.find((c) => c._id == cId)
-          );
+          console.log(this.candidates.map((c) => c._id));
+          this.candidatesByUserOrder = response.data.path.map((cId, idx) => {
+            const cIdx = this.candidates.findIndex((c) => c._id == cId);
+            if (cIdx >= 0) {
+              const candidate = this.candidates.find((c) => c._id == cId);
+              candidate.isCorrectOrder = idx == cIdx;
+              return candidate;
+            }
+          });
         }
       },
       computeLeftistsRatio() {

@@ -5,6 +5,7 @@
       :key="candidate.name"
       :candidate="candidate"
       :withImage="false"
+      :isCorrectOrder="candidate.isCorrectOrder"
     ></Card>
   </div>
 </template>

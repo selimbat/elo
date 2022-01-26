@@ -27,7 +27,7 @@
       <span class="skeleton-text"></span>
       <span class="skeleton-text"></span>
     </div>
-    <div :class="withImage ? 'infos' : 'infos withoutImage'" v-else>
+    <div :class="[{ withImage: withImage }, backgroundClass, 'infos']" v-else>
       <h2>{{ `${candidate.firstname} ${candidate.lastname}` }}</h2>
       <div class="content" v-if="withImage">
         <h3>
@@ -53,11 +53,21 @@
         type: Boolean,
         default: true,
       },
+      isCorrectOrder: {
+        type: Boolean,
+        default: null,
+      },
     },
     data() {
       return {
         hover: false,
         focus: false,
+        backgroundClass:
+          this.isCorrectOrder == true
+            ? "correct"
+            : this.isCorrectOrder == false
+            ? "incorrect"
+            : "",
       };
     },
     computed: {
@@ -104,10 +114,10 @@
   }
   .card > .infos {
     position: absolute;
-    inset: calc(100% - max(var(--infos-height), var(--infos-min-height))) 0 0 0;
+    inset: 0;
+    border-radius: var(--border-radius);
     background-color: rgb(250, 250, 250);
     padding: 0.5em 0.5em;
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
     text-align: left;
     h2 {
       font-weight: var(--bold-font-weight);
@@ -129,9 +139,16 @@
         width: 70%;
       }
     }
-    &.withoutImage {
-      inset: 0;
-      border-radius: var(--border-radius);
+    &.withImage {
+      inset: calc(100% - max(var(--infos-height), var(--infos-min-height))) 0 0
+        0;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+    &.correct {
+      background-color: #9ee59e;
+    }
+    &.incorrect {
+      background-color: #ffa1a1;
     }
   }
   .center-details {
