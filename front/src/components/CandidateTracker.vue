@@ -101,7 +101,7 @@
   .legend > ul {
     display: flex;
     justify-content: space-between;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     & > li {
       --line-height: 1.5em;
       line-height: var(--line-height);
