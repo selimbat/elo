@@ -23,7 +23,10 @@
         </div>
       </transition>
     </div>
-    <div :class="withImage ? 'infos' : 'infos withoutImage'" v-if="loading">
+    <div
+      :class="[{ withImage: withImage }, backgroundClass, 'infos']"
+      v-if="loading"
+    >
       <span class="skeleton-text"></span>
       <span class="skeleton-text"></span>
     </div>
