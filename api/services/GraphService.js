@@ -34,10 +34,18 @@ class GraphService {
    * @param {String} rightCId Id of the right-leaning candidate
    */
   addTransition(leftCId, rightCId) {
-    // we could check if this creates a cycle, wich is in our case non desirable.
-    if (leftCId != rightCId && this.transitions?.[leftCId] && rightCId) {
-      this.transitions[leftCId].push(rightCId);
+    if (leftCId == rightCId || !this.transitions?.[leftCId] || !rightCId) {
+      return;
     }
+    let { possibleStartNodes, possibleEndNodes } = getPossibleTerminalNodes();
+    // avoid creating a loop and emptying the graph of a unique start and end node.
+    if (possibleEndNodes.length == 1 && possibleEndNodes[0] == leftCId) {
+      return;
+    }
+    if (possibleStartNodes.length == 1 && possibleStartNodes[0] == rightCId) {
+      return;
+    }
+    this.transitions[leftCId].push(rightCId);
   }
 
   /**
@@ -152,18 +160,7 @@ class GraphService {
    * a 'possibleEndNodes' property wich is a list of all possible end nodes. 
    */
   getTraversalPath() {
-    // possible start nodes are nodes that aren't children of other nodes
-    let possibleStartNodes = Object.keys(this.transitions).filter(candidate => {
-      for (let children of Object.values(this.transitions)){
-        if (children.indexOf(candidate) >= 0) {
-          return false; // found a node leading to the current node, so we filter it out
-        }
-      }
-      return true;
-    });
-    // possible end nodes are nodes that do not lead to any other node
-    let possibleEndNodes = Object.entries(this.transitions).filter(children => children[1].length == 0).map(children => children[0]);
-
+    let { possibleStartNodes, possibleEndNodes } = getPossibleTerminalNodes();
     if (possibleStartNodes.length != 1 || possibleEndNodes.length != 1) {
       return {
         path: null,
@@ -182,6 +179,22 @@ class GraphService {
       ...this.getPathBetweenTwoNodes(startNode, endNode),
       multipleTerminalNodes: false
     }
+  }
+
+  getPossibleTerminalNodes() {
+    // possible start nodes are nodes that aren't children of other nodes
+    let possibleStartNodes = Object.keys(this.transitions).filter(candidate => {
+      for (let children of Object.values(this.transitions)){
+        if (children.indexOf(candidate) >= 0) {
+          return false; // found a node leading to the current node, so we filter it out
+        }
+      }
+      return true;
+    });
+    // possible end nodes are nodes that do not lead to any other node
+    let possibleEndNodes = Object.entries(this.transitions).filter(children => children[1].length == 0).map(children => children[0]);
+
+    return { possibleStartNodes, possibleEndNodes };
   }
 
   /**
