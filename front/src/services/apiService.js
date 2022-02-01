@@ -21,7 +21,6 @@ exports.postEncounter = async (candidate1Id, candidate2Id, outcome) => {
       candidate1Id: candidate1Id,
       candidate2Id: candidate2Id,
       outcome: outcome,
-      originIPAddress: "TODO: Find a way to get the ip",
     };
     await axios.post(buildAPIRoute("/encounter"), encounterToPost);
   } catch (error) {

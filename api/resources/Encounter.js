@@ -29,7 +29,6 @@ const schema = mongoose.Schema({
     }
   },
   timestamp: { type: Date, required: true, default: Date.now },
-  originIPAddress: { type: String, required: true}
 });
 
 schema.statics = {
