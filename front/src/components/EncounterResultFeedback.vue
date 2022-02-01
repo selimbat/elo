@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="encounterResult != null"
+    v-if="encounterResult != null && !hide"
     :class="{ correct: encounterResult.outcomeAgreesWithScores }"
   >
     <span
@@ -8,6 +8,7 @@
       plus {{ trueOutcomeOfPreviousEncounter }} que
       {{ encounterResult.candidate2.lastname }}.
     </span>
+    <button class="close" @click="hide = true"></button>
   </div>
 </template>
 
@@ -24,12 +25,22 @@
         required: true,
       },
     },
+    data() {
+      return {
+        hide: false,
+      };
+    },
     computed: {
       trueOutcomeOfPreviousEncounter() {
         return this.encounterResult.outcomeAgreesWithScores ^
           (this.encounterResult.outcome == this.possibleOutcomes.MORE_LEFT)
           ? "à droite"
           : "à gauche";
+      },
+    },
+    watch: {
+      encounterResult() {
+        this.hide = false;
       },
     },
   };
