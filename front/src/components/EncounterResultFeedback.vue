@@ -1,15 +1,17 @@
 <template>
-  <div
-    v-if="encounterResult != null && !hide"
-    :class="{ correct: encounterResult.outcomeAgreesWithScores }"
-  >
-    <span
-      >Les français jugent que {{ encounterResult.candidate1.lastname }} est
-      plus {{ trueOutcomeOfPreviousEncounter }} que
-      {{ encounterResult.candidate2.lastname }}.
-    </span>
-    <button class="close" @click="hide = true"></button>
-  </div>
+  <transition name="popup">
+    <div
+      v-if="encounterResult != null && !hide"
+      :class="{ correct: encounterResult.outcomeAgreesWithScores }"
+    >
+      <span
+        >Les français jugent que {{ encounterResult.candidate1.lastname }} est
+        plus {{ trueOutcomeOfPreviousEncounter }} que
+        {{ encounterResult.candidate2.lastname }}.
+      </span>
+      <button class="close" @click="hide = true"></button>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -48,11 +50,11 @@
 
 <style lang="scss" scoped>
   div {
-    --inline-padding: 1em;
+    --padding: 1em;
     --close-btn-width: 1.5em;
     box-sizing: border-box;
-    padding: 0.5em calc(var(--close-btn-width) + var(--inline-padding)) 0.5em
-      var(--inline-padding);
+    padding: var(--padding);
+    padding-right: calc(var(--close-btn-width) + var(--padding));
     text-align: left;
     border-radius: var(--border-radius);
     box-shadow: 0.5rem 0.5rem 2rem #888c9e;
@@ -67,7 +69,7 @@
     background-color: transparent;
     border: none;
     position: absolute;
-    right: var(--inline-padding);
+    right: var(--padding);
     top: 50%;
     transform: translateY(-50%);
     width: var(--close-btn-width);
@@ -97,5 +99,18 @@
         transform: translate(-50%, -50%);
       }
     }
+  }
+  .popup-enter-active {
+    transition: transform 0.1s ease-in 0.1s, opacity 0.1s ease-in 0.1s;
+  }
+  .popup-leave-active {
+    transition: opacity 0.1s ease-in;
+  }
+  .popup-enter,
+  .popup-leave-to {
+    opacity: 0;
+  }
+  .popup-enter {
+    transform: translateY(120%);
   }
 </style>

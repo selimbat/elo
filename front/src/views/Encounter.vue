@@ -73,6 +73,7 @@
     methods: {
       async postEncounter(outcome) {
         if (this.isDataLoaded) {
+          this.previousEncounterResult = null;
           this.previousEncounterResult = await api.postEncounter(
             this.candidate1._id,
             this.candidate2._id,
