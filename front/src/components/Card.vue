@@ -151,10 +151,10 @@
       border-radius: 0 0 var(--border-radius) var(--border-radius);
     }
     &.correct {
-      background-color: #9ee59e;
+      background-color: var(--success-color);
     }
     &.incorrect {
-      background-color: #ffa1a1;
+      background-color: var(--error-color);
     }
   }
   .center-details {

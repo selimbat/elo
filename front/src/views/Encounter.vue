@@ -161,6 +161,7 @@
   }
   #than {
     text-align: right;
+    padding-bottom: 1.5em;
   }
   .result-info {
     position: absolute;
