@@ -26,24 +26,18 @@
     <Card :loading="!isDataLoaded" :candidate="candidate2" tabindex="4">
       <CandidateDescription :description="candidate2.description" />
     </Card>
-    <div
+    <EncounterResultFeedback
+      :encounterResult="previousEncounterResult"
+      :possibleOutcomes="possibleOutcomes"
       class="result-info"
-      v-if="previousEncounterResult != null"
-      :class="{ correct: previousEncounterResult.outcomeAgreesWithScores }"
-    >
-      <span
-        >Les français jugent que
-        {{ previousEncounterResult.candidate1.lastname }} est plus
-        {{ trueOutcomeOfPreviousEncounter }} que
-        {{ previousEncounterResult.candidate2.lastname }}.
-      </span>
-    </div>
+    />
   </section>
 </template>
 
 <script>
   import Card from "@/components/Card.vue";
   import CandidateDescription from "@/components/CandidateDescription.vue";
+  import EncounterResultFeedback from "@/components/EncounterResultFeedback.vue";
   import api from "@/services/apiService.js";
   import {
     updateSeenEncountersCookie,
@@ -55,6 +49,7 @@
     components: {
       Card,
       CandidateDescription,
+      EncounterResultFeedback,
     },
     data() {
       return {
@@ -100,15 +95,6 @@
         this.candidate1 = candidates[0];
         this.candidate2 = candidates[1];
         this.isDataLoaded = true;
-      },
-    },
-    computed: {
-      trueOutcomeOfPreviousEncounter() {
-        return this.previousEncounterResult.outcomeAgreesWithScores ^
-          (this.previousEncounterResult.outcome ==
-            this.possibleOutcomes.MORE_LEFT)
-          ? "à droite"
-          : "à gauche";
       },
     },
   };
