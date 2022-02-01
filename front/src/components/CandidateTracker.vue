@@ -4,7 +4,6 @@
       <span>A été jugé</span>
       <ul>
         <li class="left">+ à gauche</li>
-        <li class="neutral">pareil</li>
         <li class="right">+ à droite</li>
       </ul>
       <span>que</span>
@@ -100,8 +99,8 @@
   }
   .legend > ul {
     display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
+    justify-content: space-around;
+    font-size: 1rem;
     & > li {
       --line-height: 1.5em;
       line-height: var(--line-height);
@@ -166,10 +165,6 @@
 
   .left {
     @include spectrumColor(var(--left-color));
-  }
-
-  .neutral {
-    @include spectrumColor(var(--neutral-color));
   }
 
   .right {
