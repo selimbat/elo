@@ -1,6 +1,7 @@
 const Encounter = require("../resources/Encounter");
 const EncounterTracker = require("../controllers/EncounterTracker");
 const EloService = require("../services/EloService");
+const Candidate = require("../resources/Candidate");
 
 exports.registerOne = async (req, res, next) => {
   try {
@@ -21,8 +22,14 @@ exports.registerOne = async (req, res, next) => {
       encounterTracker = await EncounterTracker.createOne(encounter.candidate1Id, encounter.candidate2Id);
     }
     encounterTracker.increment(encounter);
+    const candidate1 = await Candidate.findById(encounter.candidate1Id);
+    const candidate2 = await Candidate.findById(encounter.candidate2Id);
     res.status(200).json({
-      message: `Encounter between candidates of id ${encounterResult.items[0].candidateId} and ${encounterResult.items[1].candidateId} succeffully registered. The winner gained ${Math.abs(encounterResult.items[0].scoreDiff)}`
+      candidate1: { lastname: candidate1.lastname },
+      candidate2: { lastname: candidate2.lastname },
+      outcome: encounter.outcome,
+      outcomeAgreesWithScores: encounter.outcome === Encounter.getOutcomeEnum().MORE_RIGHT ^ candidate1.score > candidate2.score,
+      message: `Encounter between candidates ${encounterResult.items[0].candidateId} and ${encounterResult.items[1].candidateId} succeffully registered. The winner gained ${Math.abs(encounterResult.items[0].scoreDiff)}`
     });
   } catch (error) {
     res.status(400).json({message: error.message});

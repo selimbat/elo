@@ -22,7 +22,8 @@ exports.postEncounter = async (candidate1Id, candidate2Id, outcome) => {
       candidate2Id: candidate2Id,
       outcome: outcome,
     };
-    await axios.post(buildAPIRoute("/encounter"), encounterToPost);
+    const response = await axios.post(buildAPIRoute("/encounter"), encounterToPost);
+    return response.data;
   } catch (error) {
     console.error(error);
   }

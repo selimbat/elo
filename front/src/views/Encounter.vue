@@ -15,13 +15,6 @@
         >
         <a
           tabindex="3"
-          @click="postEncounter(possibleOutcomes.SIMILAR)"
-          @keyup.enter="postEncounter(possibleOutcomes.SIMILAR)"
-          @mousedown.prevent=""
-          >pareil</a
-        >
-        <a
-          tabindex="4"
           @click="postEncounter(possibleOutcomes.MORE_RIGHT)"
           @keyup.enter="postEncounter(possibleOutcomes.MORE_RIGHT)"
           @mousedown.prevent=""
@@ -30,9 +23,21 @@
       </div>
       <p id="than">que</p>
     </div>
-    <Card :loading="!isDataLoaded" :candidate="candidate2" tabindex="5">
+    <Card :loading="!isDataLoaded" :candidate="candidate2" tabindex="4">
       <CandidateDescription :description="candidate2.description" />
     </Card>
+    <div
+      class="result-info"
+      v-if="previousEncounterResult != null"
+      :class="{ correct: previousEncounterResult.outcomeAgreesWithScores }"
+    >
+      <span
+        >Les français jugent que
+        {{ previousEncounterResult.candidate1.lastname }} est plus
+        {{ trueOutcomeOfPreviousEncounter }} que
+        {{ previousEncounterResult.candidate2.lastname }}.
+      </span>
+    </div>
   </section>
 </template>
 
@@ -60,9 +65,9 @@
           name: "Superman",
         },
         isDataLoaded: false,
+        previousEncounterResult: null,
         possibleOutcomes: {
           MORE_RIGHT: -1,
-          SIMILAR: 0,
           MORE_LEFT: 1,
         },
       };
@@ -73,12 +78,18 @@
     methods: {
       async postEncounter(outcome) {
         if (this.isDataLoaded) {
-          api.postEncounter(this.candidate1._id, this.candidate2._id, outcome);
+          this.previousEncounterResult = await api.postEncounter(
+            this.candidate1._id,
+            this.candidate2._id,
+            outcome
+          );
           updateSeenEncountersCookie(
             this.candidate1._id,
             this.candidate2._id,
             outcome
           );
+          (outcome === this.possibleOutcomes.MORE_RIGHT) ^
+            (this.candidate1.score > this.candidate2.score);
           this.reset();
         }
       },
@@ -91,11 +102,21 @@
         this.isDataLoaded = true;
       },
     },
+    computed: {
+      trueOutcomeOfPreviousEncounter() {
+        return this.previousEncounterResult.outcomeAgreesWithScores ^
+          (this.previousEncounterResult.outcome ==
+            this.possibleOutcomes.MORE_LEFT)
+          ? "à droite"
+          : "à gauche";
+      },
+    },
   };
 </script>
 
 <style lang="scss" scoped>
   section {
+    position: relative;
     height: var(--encounter-section-height);
     padding-top: calc((100vh - var(--encounter-section-height)) / 2);
     width: 100%;
@@ -127,32 +148,18 @@
       box-shadow: 0.2em 0.2em 1em #aeb4ca;
       transition: background-color 0.3s;
 
-      @mixin buttonColor($color, $hover-color, $text-color) {
-        background-color: $color;
-        color: $text-color;
-        &:hover,
-        &:focus {
-          background-color: $hover-color;
-        }
+      background-color: var(--accent-color);
+      color: var(--accent-text-color);
+      &:hover,
+      &:focus {
+        background-color: var(--accent-color-light);
       }
 
-      &:nth-child(1),
-      &:nth-child(3) {
-        @include buttonColor(
-          var(--accent-color),
-          var(--accent-color-light),
-          var(--accent-text-color)
-        );
-      }
-      &:nth-child(1) {
+      &:first-of-type {
         text-align: left;
         padding-left: var(--side-padding);
       }
-      &:nth-child(2) {
-        @include buttonColor(#f7f7fa, #fff, var(--text-color));
-        align-self: center;
-      }
-      &:nth-child(3) {
+      &:last-of-type {
         align-self: end;
         text-align: right;
         padding-right: var(--side-padding);
@@ -168,5 +175,11 @@
   }
   #than {
     text-align: right;
+  }
+  .result-info {
+    position: absolute;
+    bottom: 0;
+    width: 30%;
+    max-width: var(--card-width);
   }
 </style>

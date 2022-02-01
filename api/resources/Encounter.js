@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
 
 // 1 if candidate1 is judged more left-leaning than candidate2
-// 0 if candidate1 is judged similar to candidate2
 // -1 if candidate1 is judged more right-leaning than candidate2
 const Outcome = {
   MORE_LEFT: 1,
-  SIMILAR: 0,
   MORE_RIGHT: -1
 };
 
