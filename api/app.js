@@ -11,7 +11,7 @@ db.connect();
 Candidate.initCandidates({
   getCandidates: async () => {
     try {
-      return JSON.parse(await fs.readFile(path.join(__dirname, "public", "candidates.js")));
+      return JSON.parse(await fs.readFile(path.join(__dirname, "public", "candidates.json")));
     } catch (error) {
       console.log(error);
     }
