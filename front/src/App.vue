@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" ref="app">
     <MobileUnsupportedOverlay />
     <NavBar />
     <router-view />
@@ -20,6 +20,10 @@
     },
     mounted() {
       this.configScroll(this.$route);
+      document.addEventListener("wheel", this.handleScroll);
+    },
+    destroyed() {
+      document.removeEventListener("wheel", this.handleScroll);
     },
     watch: {
       $route(to) {
@@ -28,12 +32,15 @@
     },
     methods: {
       configScroll(route) {
-        document.querySelector("#app").style.overflowY = "hidden";
+        this.$refs.app.style.overflowY = "hidden";
         if (route.meta.horizontalScroll) {
-          document.querySelector("#app").style.overflowX = "visible";
+          this.$refs.app.style.overflowX = "visible";
         } else {
-          document.querySelector("#app").style.overflowX = "hidden";
+          this.$refs.app.style.overflowX = "hidden";
         }
+      },
+      handleScroll(event) {
+        this.$refs.app.scrollBy({ left: event.deltaY, behaviour: "smooth" });
       },
     },
   };
