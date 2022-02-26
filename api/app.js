@@ -1,7 +1,7 @@
 const express = require('express');
 const db = require('./db');
 const path = require('path');
-const candidateRouter = require('./routers/candidate');
+const candidateRouter = require('./routers/Candidate');
 const encounterRouter = require('./routers/Encounter');
 const Candidate = require("./resources/Candidate");
 const { promises: fs } = require('fs');
