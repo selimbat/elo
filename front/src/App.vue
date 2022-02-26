@@ -28,11 +28,11 @@
     },
     methods: {
       configScroll(route) {
-        document.querySelector("body").style.overflowY = "hidden";
+        document.querySelector("#app").style.overflowY = "hidden";
         if (route.meta.horizontalScroll) {
-          document.querySelector("body").style.overflowX = "visible";
+          document.querySelector("#app").style.overflowX = "visible";
         } else {
-          document.querySelector("body").style.overflowX = "hidden";
+          document.querySelector("#app").style.overflowX = "hidden";
         }
       },
     },
@@ -45,6 +45,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
+    height: 100vh;
     color: var(--text-color);
   }
 </style>
