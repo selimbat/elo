@@ -17,11 +17,5 @@
   "bugs": {
     "url": "https://github.com/selimbat/elo/issues"
   },
-  "homepage": "https://github.com/selimbat/elo#readme",
-  "dependencies": {
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "jsdom": "^17.0.0",
-    "mongoose": "^5.13.7"
-  }
+  "homepage": "https://github.com/selimbat/elo#readme"
 }
