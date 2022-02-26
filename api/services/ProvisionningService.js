@@ -1,3 +1,4 @@
+const { promises: fs } = require('fs');
 const Candidate = require("../resources/Candidate");
 const Encounter = require("../resources/Encounter");
 const EncounterTracker = require("../resources/EncounterTracker");
@@ -21,6 +22,27 @@ exports.initCandidates = async (overwrite, submit, isTestContext = false) => {
     console.log(err);
     return false;
   }
+};
+
+exports.downloadCandidates = async () => {
+  try {
+    let candidates = await scrapper.getCandidates();
+    await writeCandidatesFile(candidates);
+  } catch(err) {
+    console.log(err);
+    return false;
+  }
+  return true;
+}
+
+const writeCandidatesFile = async (candidates) => {
+  const data = JSON.stringify(candidates);
+  try {
+    await fs.writeFile("./public/candidates.json", data);
+  } catch (err) {
+    console.log(`Error writing candidates file: ${err}`);
+  } 
+  console.log("Candidates file written successfully!");
 };
 
 exports.populateRandomEncounters = async (nbEncounters) => {

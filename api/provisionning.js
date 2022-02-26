@@ -1,17 +1,12 @@
-const db = require("./db");
-const { initCandidates } = require("./services/ProvisionningService.js");
+const { downloadCandidates } = require("./services/ProvisionningService.js");
 
 (async () => {
-  const isTestContext = false;
-  const overwrite = false;
-  console.log("Starting db provisionning.");
+  console.log("Starting candidates scrapping.");
   try{
-    if (await db.connect()) {
-      if (await initCandidates(overwrite, !isTestContext)) {
-        console.log("Successfully finished db provisionning.");
-      } else {
-        console.log("Failed db provisionning.");
-      }
+    if (await downloadCandidates()) {
+      console.log("Successfully finished candidates scrapping.");
+    } else {
+      console.log("Failed candidates scrapping.");
     }
     process.exit();
   } catch (err) {

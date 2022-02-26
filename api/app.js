@@ -3,8 +3,20 @@ const db = require('./db');
 const path = require('path');
 const candidateRouter = require('./routers/candidate');
 const encounterRouter = require('./routers/Encounter');
+const Candidate = require("./resources/Candidate");
+const { promises: fs } = require('fs');
 
 db.connect();
+
+Candidate.initCandidates({
+  getCandidates: async () => {
+    try {
+      return JSON.parse(await fs.readFile("./public/candidates.js"));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+});
 
 const app = express();
 

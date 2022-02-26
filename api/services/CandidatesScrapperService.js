@@ -11,48 +11,56 @@ exports.getCandidates = async (isTestContext = false) => {
 formatPage = async (data, isTestContext = false) => {
   let candidates = [];
   let doc = new JSDOM(data);
-  let el = doc.window.document.querySelector("#mw-content-text > .mw-parser-output > table.wikitable > tbody");
-  for(let i = 1; i < el.children.length; i++){
-    let candidate = {};
-    let links = el.children[i].children[0].querySelectorAll("a");
-    let nameNode = links[0];
-    ([ firstname, ...lastname ] = nameNode.textContent.split(" "));
-    candidate.firstname = firstname;
-    candidate.lastname = lastname.join(" ");
-    candidate.wikipediaUrl = "https://www.wikipedia.org" + nameNode.href;
-    let ageStr = el.children[i].children[0].textContent;
-    candidate.age = Number(ageStr.substring(ageStr.indexOf("(") + 1, ageStr.indexOf("ans)")));
-    if (links.length > 1) {
-      let partyNode = links[1];
-      candidate.party = {
-        name: partyNode.textContent,
-        wikipediaUrl: "https://www.wikipedia.org" + partyNode.href,
-      };
-    } else {
-      candidate.party = {
-        name: ageStr.substr(ageStr.indexOf(")" + 2)),
-        wikipediaUrl: '',
-      }
-    }
-    const tempImgUrl = "https://commons.wikimedia.org" + el.children[i].children[1].children[0].href.replace("Fichier",'File');
-    candidate.imgUrl = await getPage(tempImgUrl, getImgUrlFromFilePage);
 
-    let occupationsStr = el.children[i].children[3].textContent.replace("\n", "");
-    let occupations = [];
-    if (occupationsStr !== "Aucune"){
-      occupationsStr.split(')').forEach(occ => {
-        if (occ === '') return;
-        occupations.push({
-          label: occ.substring(0, occ.indexOf('(')),
-          since: Number(occ.substring(occ.indexOf('(depuis') + 7))
+  const getCandidatesFromTable = async (tableBody) => {
+    for(let i = 1; i < tableBody.children.length; i++){
+      let candidate = {};
+      let links = tableBody.children[i].children[0].querySelectorAll("a");
+      let nameNode = links[0];
+      ([ firstname, ...lastname ] = nameNode.textContent.split(" "));
+      candidate.firstname = firstname;
+      candidate.lastname = lastname.join(" ");
+      candidate.wikipediaUrl = "https://www.wikipedia.org" + nameNode.href;
+      let ageStr = tableBody.children[i].children[0].textContent;
+      candidate.age = Number(ageStr.substring(ageStr.indexOf("(") + 1, ageStr.indexOf("ans)")));
+      if (links.length > 1) {
+        let partyNode = links[1];
+        candidate.party = {
+          name: partyNode.textContent,
+          wikipediaUrl: "https://www.wikipedia.org" + partyNode.href,
+        };
+      } else {
+        candidate.party = {
+          name: ageStr.substr(ageStr.indexOf(")" + 2)),
+          wikipediaUrl: '',
+        }
+      }
+      const tempImgUrl = "https://commons.wikimedia.org" + tableBody.children[i].children[1].children[0].href.replace("Fichier",'File');
+      candidate.imgUrl = await getPage(tempImgUrl, getImgUrlFromFilePage);
+  
+      let occupationsStr = tableBody.children[i].children[3].textContent.replace("\n", "");
+      let occupations = [];
+      if (occupationsStr !== "Aucune"){
+        occupationsStr.split(')').forEach(occ => {
+          if (occ === '') return;
+          occupations.push({
+            label: occ.substring(0, occ.indexOf('(')),
+            since: Number(occ.substring(occ.indexOf('(depuis') + 7))
+          });
         });
-      });
-    };
-    candidate.occupations = occupations;
-    candidate.description = el.children[i].children[4].textContent.replace(/\[\d+\]/g, "").replace(/\s+/g, " ");
-    
-    candidates.push(candidate);
+      };
+      candidate.occupations = occupations;
+      candidate.description = tableBody.children[i].children[4].textContent.replace(/\[\d+\]/g, "").replace(/\s+/g, " ");
+      
+      candidates.push(candidate);
+    }
+  };
+
+  for (let i = 3; i <= 4; i++){ // tableaux des candidats ayant reçu au moins 500 parrainages et entre 100 et 500
+    let tbody = doc.window.document.querySelector(`#mw-content-text > .mw-parser-output > table.wikitable:nth-of-type(${i}) > tbody`);
+    await getCandidatesFromTable(tbody);
   }
+
   if (!isTestContext){
     await downloadImages(candidates);
   }

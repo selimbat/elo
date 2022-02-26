@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+const lastNameToId = (lastname) => {
+  return lastname.toLowerCase().normalize("NFD").replace(/\s+/g, "-").replace(/[\u0300-\u036f]/g, "");
+}
+
 const schema = mongoose.Schema({
   _id: { type: String, required: true },
   firstname: { type: String, required: true },
@@ -9,7 +13,7 @@ const schema = mongoose.Schema({
     set: function(v) {
       if (this.isNew) {
         // Set the id as the lastname without the accents and diacritics.
-        this._id = v.toLowerCase().normalize("NFD").replace(/\s+/g, "-").replace(/[\u0300-\u036f]/g, "");
+        this._id = lastNameToId(v);
       }
       return v;
     }
@@ -30,12 +34,11 @@ const schema = mongoose.Schema({
 });
 
 schema.statics = {
-  initCandidates: async (source, submit, isTestContext = false) => {
-    let candidates = await source.getCandidates(isTestContext);
-    for(let i = 0; i < candidates.length; i++) {
-      candidates[i].score = 0;
-    }
-    if (submit){
+  initCandidates: async (source) => {
+    if (!await mongoose.model('Candidate').findOne({})) {
+      console.log("Candidate collection is empty. Populating it from local json.")
+      let candidates = await source.getCandidates();
+      candidates = candidates.map(c => { return { ...c, score: 0 }});
       try {
         await mongoose.model('Candidate').insertMany(candidates);
         console.log("Initial candidates inserted to Collection.");
