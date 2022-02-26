@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <MobileUnsupportedOverlay />
     <NavBar />
     <router-view />
   </div>
@@ -9,11 +10,13 @@
   import "./reset.css";
   import "./globals.scss";
   import NavBar from "./components/NavBar.vue";
+  import MobileUnsupportedOverlay from "./components/MobileUnsupportedOverlay.vue";
 
   export default {
     name: "App",
     components: {
       NavBar,
+      MobileUnsupportedOverlay,
     },
     mounted() {
       this.configScroll(this.$route);

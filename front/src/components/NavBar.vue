@@ -7,7 +7,7 @@
 
 <style lang="scss" scoped>
   #nav {
-    z-index: 10;
+    z-index: 1;
     padding: 30px;
     position: fixed;
     left: 50%;
