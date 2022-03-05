@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "node node_modules/nodemon/bin/nodemon.js server.js",
-    "prov": "node provisionning.js",
+    "prov:candidates": "node provisionning.js",
+    "prov:averages": "node firstOrderingEstimator.js",
     "test": "jest --watchAll"
   },
   "author": "https://github.com/selimbat",

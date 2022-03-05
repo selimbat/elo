@@ -41,6 +41,7 @@ const writeCandidatesFile = async (candidates) => {
     await fs.writeFile("./assets/candidates.json", data);
   } catch (err) {
     console.log(`Error writing candidates file: ${err}`);
+    return;
   } 
   console.log("Candidates file written successfully!");
 };
