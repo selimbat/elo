@@ -12,7 +12,11 @@
     <div class="wrapper">
       <h2>Ton classement :</h2>
     </div>
-    <UserCaroussel class="user-caroussel" :candidates="candidatesByUserOrder" />
+    <UserCaroussel
+      class="user-caroussel"
+      :candidates="candidatesByUserOrder"
+      :totalCandidatesCount="candidates.length"
+    />
   </section>
 </template>
 
@@ -81,7 +85,6 @@
         this.trackersMap = response.data.trackersMap;
         this.leftRatio = this.computeLeftistsRatio();
         if (response.data.path) {
-          console.log(this.candidates.map((c) => c._id));
           this.candidatesByUserOrder = response.data.path.map((cId, idx) => {
             const cIdx = this.candidates.findIndex((c) => c._id == cId);
             if (cIdx >= 0) {

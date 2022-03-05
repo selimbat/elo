@@ -9,12 +9,22 @@
     ></Card>
   </div>
   <div class="caroussel not-ranked" v-else>
-    <span>Compare plus de candidats pour voir ton classement.</span>
+    <span v-if="averageEncountersRegister != null"
+      >Classe encore environ
+      {{
+        Math.max(1, averageEncountersUntilOrdered - numberOfSeenEncounters)
+      }}
+      paires de candidats pour comparer ton classement au classement
+      général.</span
+    >
+    <span v-else>Chargement...</span>
   </div>
 </template>
 
 <script>
   import Card from "@/components/Card.vue";
+  import { getAverageEncountersUntilOrdered } from "@/services/apiService.js";
+  import { getSeenEncountersCookie } from "@/services/cookieService.js";
 
   export default {
     name: "UserCaroussel",
@@ -22,14 +32,41 @@
       Card,
     },
     props: {
+      totalCandidatesCount: {
+        type: Number,
+        required: true,
+      },
       candidates: {
         type: Array,
         default: () => [],
       },
     },
+    data() {
+      return {
+        numberOfSeenEncounters: 0,
+        averageEncountersRegister: null,
+      };
+    },
     computed: {
       userOrdered() {
         return this.candidates.length > 0;
+      },
+      averageEncountersUntilOrdered() {
+        return Math.ceil(
+          this.averageEncountersRegister?.[this.totalCandidatesCount]
+        );
+      },
+    },
+    mounted() {
+      const cookie = getSeenEncountersCookie();
+      if (cookie) {
+        this.numberOfSeenEncounters = Object.keys(cookie).length;
+      }
+      this.getAverageEncountersUntilOrdered();
+    },
+    methods: {
+      async getAverageEncountersUntilOrdered() {
+        this.averageEncountersRegister = await getAverageEncountersUntilOrdered();
       },
     },
   };
