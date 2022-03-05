@@ -7,6 +7,9 @@ resolveImgUrl = (protocol, host, candidate) => {
   if (imgUrl.length > 0 && imgUrl[0] === "."){ // remove the first dot of the relative path
     imgUrl = imgUrl.substring(1);
   }
+  if (imgUrl.length > 0 && imgUrl[0] !== "/"){ // add a slash if it is missing
+    imgUrl = `/${imgUrl}`;
+  }
   candidate.imgUrl = `${protocol}://${host}${imgUrl}`;
 }
 

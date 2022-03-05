@@ -38,7 +38,7 @@ exports.downloadCandidates = async () => {
 const writeCandidatesFile = async (candidates) => {
   const data = JSON.stringify(candidates);
   try {
-    await fs.writeFile("./public/candidates.json", data);
+    await fs.writeFile("./assets/candidates.json", data);
   } catch (err) {
     console.log(`Error writing candidates file: ${err}`);
   } 

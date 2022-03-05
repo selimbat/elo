@@ -11,7 +11,7 @@ db.connect();
 Candidate.initCandidates({
   getCandidates: async () => {
     try {
-      return JSON.parse(await fs.readFile(path.join(__dirname, "public", "candidates.json")));
+      return JSON.parse(await fs.readFile(path.join(__dirname, "assets", "candidates.json")));
     } catch (error) {
       console.log(error);
     }
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/public", express.static("public"));
+app.use(express.static(path.join(__dirname, "assets", "public")));
 
 app.use("/api/candidates", candidateRouter);
 app.use("/api/encounter", encounterRouter);

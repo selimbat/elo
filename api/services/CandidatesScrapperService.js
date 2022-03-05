@@ -56,10 +56,9 @@ formatPage = async (data, isTestContext = false) => {
     }
   };
 
-  for (let i = 3; i <= 4; i++){ // tableaux des candidats ayant reçu au moins 500 parrainages et entre 100 et 500
-    let tbody = doc.window.document.querySelector(`#mw-content-text > .mw-parser-output > table.wikitable:nth-of-type(${i}) > tbody`);
-    await getCandidatesFromTable(tbody);
-  }
+  // tableaux des candidats ayant reçu au moins 500 parrainages
+  let tbody = doc.window.document.querySelector(`table.wikitable:not(.sortable) > tbody`);
+  await getCandidatesFromTable(tbody);
 
   if (!isTestContext){
     await downloadImages(candidates);
@@ -78,8 +77,9 @@ downloadImages = async (candidates) => {
   return new Promise(async (resolve, reject) => {
     try {
       await Promise.all(candidates.map(async c => {
-        let filename = `./public/img/${(c.firstname + "_" + c.lastname).toLowerCase().replace(/\s+/g, "_")}.jpg`;
-        await downloadImage(c.imgUrl, filename);
+        let filename = `${(c.firstname + "_" + c.lastname).toLowerCase().replace(/\s+/g, "_")}.jpg`;
+        let filepath = `./assets/public/${filename}`;
+        await downloadImage(c.imgUrl, filepath);
         c.imgUrl = filename; // change the link to the downloaded file
       }))
       console.log("Successfully downloaded candidates images.");
