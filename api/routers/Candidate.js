@@ -5,7 +5,7 @@ const controller = require('../controllers/Candidate');
 
 router.get('/', controller.getAll);
 router.get('/random-two', controller.getRandomTwo);
+router.get('/progress/:nbCandidates?', controller.getUserProgress);
 router.get('/:id', controller.getOneById);
-//router.post('/', controller.createOne);
 
 module.exports = router;

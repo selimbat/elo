@@ -1,6 +1,7 @@
 const Candidate = require("../resources/Candidate");
 const EncounterTracker = require("../resources/EncounterTracker");
 const GraphService = require("../services/GraphService.js");
+const averages = require("../assets/public/averageEncountersUntilOrdering.json");
 
 resolveImgUrl = (protocol, host, candidate) => {
   let imgUrl = candidate.imgUrl;
@@ -70,6 +71,22 @@ exports.createOne = (req, res, next) => {
     .then(() => res.status(201).json({ message: `Candidat '${candidate.name}' enregistré !`}))
     .catch(error => res.status(400).json({ error }));
 };
+
+exports.getUserProgress = async (req, res, next) => {
+  try {
+    let nbCandidates = req.params.nbCandidates;
+    if (!nbCandidates) {
+      nbCandidates = await Candidate.countDocuments();
+    }
+    res.status(200).json({
+      nbCandidates,
+      averageNbEncountersUntilPath: averages[nbCandidates],
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error });
+  }
+}
 
 // testable functions
 
