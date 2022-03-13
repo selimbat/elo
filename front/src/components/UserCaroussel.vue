@@ -11,9 +11,7 @@
   <div class="caroussel not-ranked" v-else>
     <span v-if="averageEncountersRegister != null"
       >Classe encore environ
-      {{
-        Math.max(1, averageEncountersUntilOrdered - numberOfSeenEncounters)
-      }}
+      {{ Math.max(1, averageEncountersUntilOrdered - numberOfSeenEncounters) }}
       paires de candidats pour comparer ton classement au classement
       général.</span
     >
@@ -52,9 +50,7 @@
         return this.candidates.length > 0;
       },
       averageEncountersUntilOrdered() {
-        return Math.ceil(
-          this.averageEncountersRegister?.[this.totalCandidatesCount]
-        );
+        return Math.ceil(this.averageEncountersRegister);
       },
     },
     mounted() {
@@ -62,11 +58,17 @@
       if (cookie) {
         this.numberOfSeenEncounters = Object.keys(cookie).length;
       }
-      this.getAverageEncountersUntilOrdered();
     },
     methods: {
       async getAverageEncountersUntilOrdered() {
-        this.averageEncountersRegister = await getAverageEncountersUntilOrdered();
+        this.averageEncountersRegister = await getAverageEncountersUntilOrdered(
+          this.totalCandidatesCount
+        );
+      },
+    },
+    watch: {
+      totalCandidatesCount() {
+        this.getAverageEncountersUntilOrdered();
       },
     },
   };

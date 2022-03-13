@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const buildAPIRoute = (path, isStatic = false) => {
-  return `${process.env.VUE_APP_API_HOST}${isStatic ? '' : '/api'}${path}`;
+const buildAPIRoute = (path) => {
+  return `${process.env.VUE_APP_API_HOST}/api${path}`;
 }
 
 exports.getAllCandidates = async (seenEncountersCookie) => {
@@ -44,10 +44,14 @@ exports.getTwoRandomCandidates = async (seenEncountersCookie) => {
   }
 }
 
-exports.getAverageEncountersUntilOrdered = async () => {
+exports.getAverageEncountersUntilOrdered = async (nbCandidates) => {
   try {
-    const response = await axios.get(buildAPIRoute("/averageEncountersUntilOrdering.json", true));
-    return response.data;
+    let route = "/candidates/progress/";
+    if (nbCandidates) {
+      route = route + nbCandidates;
+    }
+    const response = await axios.get(buildAPIRoute(route));
+    return response.data.averageNbEncountersUntilPath;
   } catch (err) {
     console.log(err);
   }

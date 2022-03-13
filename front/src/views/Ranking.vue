@@ -20,36 +20,6 @@
   </section>
 </template>
 
-<style lang="scss" scoped>
-  .ranking {
-    min-width: fit-content;
-    display: flex;
-    flex-direction: column;
-    padding: 0 1em;
-    font-size: 0.9rem;
-    height: var(--ranking-section-height);
-    padding-top: calc((100vh - var(--ranking-section-height)) / 2);
-    > .elo-caroussel {
-      flex-basis: 85%;
-      margin-bottom: 0.5em;
-    }
-    > .user-caroussel {
-      margin-top: 0.5em;
-      flex-basis: 15%;
-    }
-    > .wrapper {
-      position: relative;
-      margin: 0.25em 1em;
-      height: 2em;
-      > h2 {
-        font-size: 1.5em;
-        font-weight: var(--bold-font-weight);
-        position: fixed;
-      }
-    }
-  }
-</style>
-
 <script>
   import EloCaroussel from "@/components/EloCaroussel.vue";
   import UserCaroussel from "@/components/UserCaroussel.vue";
@@ -110,3 +80,33 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .ranking {
+    min-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    padding: 0 1em;
+    font-size: 0.9rem;
+    height: var(--ranking-section-height);
+    padding-top: calc((100vh - var(--ranking-section-height)) / 2);
+    > .elo-caroussel {
+      flex-basis: 85%;
+      margin-bottom: 0.5em;
+    }
+    > .user-caroussel {
+      margin-top: 0.5em;
+      flex-basis: 15%;
+    }
+    > .wrapper {
+      position: relative;
+      margin: 0.25em 1em;
+      height: 2em;
+      > h2 {
+        font-size: 1.5em;
+        font-weight: var(--bold-font-weight);
+        position: fixed;
+      }
+    }
+  }
+</style>
