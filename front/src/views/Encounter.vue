@@ -31,6 +31,9 @@
       :possibleOutcomes="possibleOutcomes"
       class="result-info"
     />
+    <div class="user-progress">
+      <span :style="`width:${progressRatio}%`"></span>
+    </div>
   </section>
 </template>
 
@@ -65,7 +68,21 @@
           MORE_RIGHT: -1,
           MORE_LEFT: 1,
         },
+        numberOfSeenEncounters: 0,
+        totalNbOfCandidates: null,
+        averageNbEncountersUntilOrdered: null,
       };
+    },
+    computed: {
+      progressRatio() {
+        let ratio = this.averageNbEncountersUntilOrdered
+          ? Math.min(
+              1,
+              this.numberOfSeenEncounters / this.averageNbEncountersUntilOrdered
+            )
+          : 0;
+        return ratio * 100;
+      },
     },
     created() {
       this.reset();
@@ -92,10 +109,23 @@
       async reset() {
         this.isDataLoaded = false;
         let seenEncountersCookie = getSeenEncountersCookie();
+        if (seenEncountersCookie) {
+          this.numberOfSeenEncounters = Object.keys(
+            seenEncountersCookie
+          ).length;
+        }
         let candidates = await api.getTwoRandomCandidates(seenEncountersCookie);
         this.candidate1 = candidates[0];
         this.candidate2 = candidates[1];
         this.isDataLoaded = true;
+        let {
+          nbCandidates,
+          averageNbEncountersUntilPath,
+        } = await api.getAverageEncountersUntilOrdered(
+          this.totalNbOfCandidates
+        );
+        this.totalNbOfCandidates = nbCandidates;
+        this.averageNbEncountersUntilOrdered = averageNbEncountersUntilPath;
       },
     },
   };
@@ -169,5 +199,22 @@
     bottom: 0;
     width: 30%;
     max-width: var(--card-width);
+    z-index: 2;
+  }
+  .user-progress {
+    position: absolute;
+    height: 1em;
+    width: 100%;
+    bottom: -2em;
+    > span {
+      content: "";
+      background-color: var(--accent-color);
+      width: 0;
+      position: absolute;
+      height: 1em;
+      left: 0;
+      border-radius: 5px;
+      transition: width 0.3s ease;
+    }
   }
 </style>

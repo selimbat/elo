@@ -9,9 +9,11 @@
     ></Card>
   </div>
   <div class="caroussel not-ranked" v-else>
-    <span v-if="averageEncountersRegister != null"
+    <span v-if="averageEncountersUntilOrdered != null"
       >Classe encore environ
-      {{ Math.max(1, averageEncountersUntilOrdered - numberOfSeenEncounters) }}
+      {{
+        Math.max(1, averageEncountersUntilOrderedCeil - numberOfSeenEncounters)
+      }}
       paires de candidats pour comparer ton classement au classement
       général.</span
     >
@@ -42,15 +44,15 @@
     data() {
       return {
         numberOfSeenEncounters: 0,
-        averageEncountersRegister: null,
+        averageEncountersUntilOrdered: null,
       };
     },
     computed: {
       userOrdered() {
         return this.candidates.length > 0;
       },
-      averageEncountersUntilOrdered() {
-        return Math.ceil(this.averageEncountersRegister);
+      averageEncountersUntilOrderedCeil() {
+        return Math.ceil(this.averageEncountersUntilOrdered);
       },
     },
     mounted() {
@@ -58,12 +60,13 @@
       if (cookie) {
         this.numberOfSeenEncounters = Object.keys(cookie).length;
       }
+      this.getAverageEncountersUntilOrdered();
     },
     methods: {
       async getAverageEncountersUntilOrdered() {
-        this.averageEncountersRegister = await getAverageEncountersUntilOrdered(
-          this.totalCandidatesCount
-        );
+        this.averageEncountersUntilOrdered = (
+          await getAverageEncountersUntilOrdered(this.totalCandidatesCount)
+        ).averageNbEncountersUntilPath;
       },
     },
     watch: {

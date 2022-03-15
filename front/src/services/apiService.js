@@ -51,7 +51,7 @@ exports.getAverageEncountersUntilOrdered = async (nbCandidates) => {
       route = route + nbCandidates;
     }
     const response = await axios.get(buildAPIRoute(route));
-    return response.data.averageNbEncountersUntilPath;
+    return response.data;
   } catch (err) {
     console.log(err);
   }
