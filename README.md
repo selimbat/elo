@@ -11,6 +11,10 @@ Il permet uniquement d'aggréger les comparaisons deux-à-deux des candidats fai
 
 Aucune donnée personnelle n'est récoltée par Elo Président. Les choix délibérés de n'avoir ni authentification ni système de traçage par cookies ou autre ainsi que d'ouvrir le code source du site ont été fait pour garantir l'anonymat absolut des réponses données.
 
+Par ailleurs, le service [Plausible](https://plausible.io/) est utilisé pour le suivi du trafic sur le site. C'est une solution qui met l'accent sur la protection des données, respectant le Règlement Général sur la Protection des Données, à code source ouvert et se présente comme une alternative à Google Analytics. [Plus de détails ici](https://plausible.io/privacy-focused-web-analytics).
+
+Pour suivre vous aussi le trafic sur Elo Président, [rendez-vous ici](https://plausible.io/elo-president.fr?period=7d).
+
 ## Sources
 
 Toutes les informations données par Elo Président sont tirées de [la page Wikipédia de l'élection présidentielle de 2022](https://fr.wikipedia.org/wiki/Candidats*%C3%A0_l'%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2022).
