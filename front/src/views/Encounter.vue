@@ -126,6 +126,7 @@
         );
         this.totalNbOfCandidates = nbCandidates;
         this.averageNbEncountersUntilOrdered = averageNbEncountersUntilPath;
+        this.$emit("progressed", this.progressRatio);
       },
     },
   };

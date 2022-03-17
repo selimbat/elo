@@ -1,8 +1,8 @@
 <template>
   <div id="app" ref="app">
     <MobileUnsupportedOverlay />
-    <NavBar />
-    <router-view />
+    <NavBar :isGraphComplete="isGraphComplete" />
+    <router-view @progressed="handleProgress" />
   </div>
 </template>
 
@@ -18,6 +18,11 @@
       NavBar,
       MobileUnsupportedOverlay,
     },
+    data() {
+      return {
+        isGraphComplete: false,
+      };
+    },
     mounted() {
       this.configScroll(this.$route);
       document.addEventListener("wheel", this.handleScroll);
@@ -31,6 +36,9 @@
       },
     },
     methods: {
+      handleProgress(progressRatio) {
+        this.isGraphComplete = progressRatio >= 100;
+      },
       configScroll(route) {
         this.$refs.app.style.overflowY = "hidden";
         if (route.meta.horizontalScroll) {

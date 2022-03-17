@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <router-link to="/">Rencontre</router-link>
-    <router-link to="/ranking">Classement</router-link>
+    <router-link ref="ranking" to="/ranking">Classement</router-link>
   </div>
 </template>
 
@@ -29,6 +29,17 @@
           background-color: var(--accent-color-light);
         }
       }
+      &.nudge[href="#/ranking"] {
+        animation: blinking 1s steps(1, start) infinite;
+      }
+      @keyframes blinking {
+        0% {
+          background-color: var(--accent-color);
+        }
+        50% {
+          background-color: var(--accent-color-light);
+        }
+      }
     }
   }
 </style>
@@ -36,5 +47,21 @@
 <script>
   export default {
     name: "NavBar",
+    props: {
+      isGraphComplete: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    watch: {
+      isGraphComplete(value) {
+        if (value) {
+          this.$refs.ranking.$el.classList.add("nudge");
+          setTimeout(() => {
+            this.$refs.ranking.$el.classList.remove("nudge");
+          }, 3500);
+        }
+      },
+    },
   };
 </script>
