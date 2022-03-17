@@ -14,8 +14,12 @@
       {{
         Math.max(1, averageEncountersUntilOrderedCeil - numberOfSeenEncounters)
       }}
-      paires de candidats pour comparer ton classement au classement
-      général.</span
+      {{
+        averageEncountersUntilOrderedCeil - numberOfSeenEncounters > 1
+          ? "paires"
+          : "paire"
+      }}
+      de candidats pour comparer ton classement au classement général.</span
     >
     <span v-else>Chargement...</span>
   </div>
