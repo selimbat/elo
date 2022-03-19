@@ -1,7 +1,7 @@
 <template>
   <div class="overlay">
     <p>
-      Ce site n'est pas adapté pour une expérience sur modile. Veuillez
+      Ce site n'est pas adapté pour une expérience sur mobile. Veuillez
       l'essayer sur un ordinateur.
     </p>
   </div>
