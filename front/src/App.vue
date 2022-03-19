@@ -3,6 +3,7 @@
     <MobileUnsupportedOverlay />
     <NavBar :isGraphComplete="isGraphComplete" />
     <router-view @progressed="handleProgress" />
+    <Footer />
   </div>
 </template>
 
@@ -11,12 +12,14 @@
   import "./globals.scss";
   import NavBar from "./components/NavBar.vue";
   import MobileUnsupportedOverlay from "./components/MobileUnsupportedOverlay.vue";
+  import Footer from "./components/Footer.vue";
 
   export default {
     name: "App",
     components: {
       NavBar,
       MobileUnsupportedOverlay,
+      Footer,
     },
     data() {
       return {
