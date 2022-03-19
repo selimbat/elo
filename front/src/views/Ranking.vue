@@ -49,9 +49,10 @@
       async getCandidates() {
         const seenEncountersCookie = getSeenEncountersCookie();
         const response = await api.getAllCandidates(seenEncountersCookie);
-        this.candidates = response.data.candidates.sort(
-          (c1, c2) => c1.score < c2.score
+        this.candidates = response.data.candidates.sort((c1, c2) =>
+          c1.score < c2.score ? 1 : -1
         );
+        console.log(response.data.candidates);
         this.trackersMap = response.data.trackersMap;
         this.leftRatio = this.computeLeftistsRatio();
         if (response.data.path) {
